@@ -8,7 +8,7 @@ select clt_nome as nombre, clt_apelidos as apellidos, ven_data as fecha from cli
 select count(ven_id) as "total ventas", count(dev_venda) as "articulo vendidos", sum(dev_cantidade) as "unidades vendidas", avg(dev_prezo_unitario) as "media precio" from detalle_vendas join vendas on dev_numero = ven_id;
 
 /*4*/
-
+select art_codigo as numero, art_nome as nombre, art_peso as peso from artigos
 
 /*5*/
 
