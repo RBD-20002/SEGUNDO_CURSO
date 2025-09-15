@@ -2,8 +2,8 @@ public class Libro extends Material{
 
     private String autor;
 
-    public Libro(String titulo, int numIdent, boolean estado, String autor){
-        super(titulo, numIdent,estado);
+    public Libro(int numIdent, String titulo, String autor){
+        super(titulo, numIdent);
         this.autor = autor;
     }
 

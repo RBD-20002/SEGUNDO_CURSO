@@ -2,8 +2,8 @@ public class Revista extends Material{
 
     private int numero;
 
-    public Revista(String titulo, int numIdent, boolean estado, int numero) {
-        super(titulo, numIdent,estado);
+    public Revista(int numIdent, String titulo, int numero) {
+        super(titulo, numIdent);
         this.numero = numero;
     }
 
