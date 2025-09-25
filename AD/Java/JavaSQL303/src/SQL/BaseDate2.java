@@ -11,7 +11,7 @@ public class BaseDate2 {
         startConection();
     }
 
-    private void startConection(){
+    private void startConection() {
         try{
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/empleados",

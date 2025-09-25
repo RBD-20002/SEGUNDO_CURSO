@@ -7,7 +7,11 @@ public class BaseDate3 {
     private Connection connection;
     static Scanner SC = new Scanner(System.in);
 
-    private void startConnection() throws SQLException {
+    public BaseDate3(){
+        startConnection();
+    }
+
+    private void startConnection() {
         try{
             connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/empleados",
@@ -15,7 +19,7 @@ public class BaseDate3 {
                     "ricardoBD90-"
             );
         }catch (SQLException e){
-            throw new SQLException(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -38,7 +42,7 @@ public class BaseDate3 {
         }
     }
 
-    public void AddEmployeesForTransaction() throws SQLException{
+    public void AddEmployeesForTransaction() {
         int num = EntradaDatos.leerInt("numero de empleados a agregar");
         try{
             connection.setAutoCommit(false);
