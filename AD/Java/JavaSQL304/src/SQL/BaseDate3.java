@@ -26,7 +26,7 @@ public class BaseDate3 {
     public void insertEmpleado(){
         String sql = "INSERT INTO empleado VALUES (?,?,?,?,?,?,?,?,?,?)";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
-            ps.setInt(1,EntradaDatos.leerInt("id"));
+            ps.setInt(1,519356);
             ps.setString(2,EntradaDatos.leerString("nombre"));
             ps.setString(3,EntradaDatos.leerString("primer apellido"));
             ps.setString(4,EntradaDatos.leerString("segundo apellido"));

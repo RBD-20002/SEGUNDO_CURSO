@@ -87,4 +87,23 @@ public class Modelo {
             return false;
         }
     }
+
+    public Student getStudent(String id) {
+        String sql = "SELECT * FROM student WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Student(
+                        rs.getString("id"),
+                        rs.getString("name"),
+                        rs.getString("surname"),
+                        rs.getInt("age")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 }

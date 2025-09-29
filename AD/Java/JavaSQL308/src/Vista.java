@@ -70,9 +70,18 @@ public class Vista extends javax.swing.JFrame {
         surnameTextField = new javax.swing.JTextField(10);
         ageTextField = new javax.swing.JTextField(10);
 
+        jButton1 = new javax.swing.JButton("GUARDAR");
+        jButton2 = new javax.swing.JButton("ACTUALIZAR");
+        jButton3 = new javax.swing.JButton("BORRAR");
+
+
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setLayout(new  java.awt.FlowLayout());
+        setLayout(new java.awt.FlowLayout());
 
         add(jLabel1);
         add(idTextField);
@@ -85,5 +94,13 @@ public class Vista extends javax.swing.JFrame {
 
         add(jLabel4);
         add(ageTextField);
+
+        add(jButton1);
+        add(jButton2);
+        add(jButton3);
+
+        jScrollPane1.setViewportView(jTable1);
+        add(jScrollPane1);
     }
+
 }
