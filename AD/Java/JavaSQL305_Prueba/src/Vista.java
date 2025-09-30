@@ -1,3 +1,4 @@
+
 public class Vista extends javax.swing.JFrame {
 
     // Variables declaration - do not modify

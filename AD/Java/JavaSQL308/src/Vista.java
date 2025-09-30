@@ -60,8 +60,9 @@ public class Vista extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     public void initComponents(){
         jLabel5 = new javax.swing.JLabel("STUDENT MANAGEMENT SYSTEM");
-        jLabel1 = new javax.swing.JLabel("ID");
+
         jLabel2 = new javax.swing.JLabel("NAME");
+        jLabel1 = new javax.swing.JLabel("ID");
         jLabel3 = new javax.swing.JLabel("SUN NAME");
         jLabel4 = new javax.swing.JLabel("AGE");
 

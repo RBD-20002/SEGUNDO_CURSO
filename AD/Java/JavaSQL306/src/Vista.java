@@ -37,6 +37,7 @@ public class Vista extends javax.swing.JFrame{
         jLabel1 = new javax.swing.JLabel("NSS:");
 
         setLayout(new java.awt.FlowLayout());
+
         add(jLabel1);
         add(jTextField1);
         add(jButton1);
