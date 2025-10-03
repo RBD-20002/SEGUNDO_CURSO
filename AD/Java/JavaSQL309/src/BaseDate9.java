@@ -52,6 +52,11 @@ public class BaseDate9 {
     }
 
     public boolean esBorrowed(String code){
-        String sql = ""
+        String sql = "";
+        try{
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
