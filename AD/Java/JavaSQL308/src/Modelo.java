@@ -14,7 +14,7 @@ public class Modelo {
 
     public void openConnection(){
         try{
-            connection = DriverManager.getConnection(usuario,password,url);
+            connection = DriverManager.getConnection(url,usuario,password);
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
