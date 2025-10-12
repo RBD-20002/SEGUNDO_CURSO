@@ -1,73 +1,58 @@
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        BaseDate9 bd9 = new BaseDate9();
+        BD9 bd9 = new BD9();
         int opcion;
 
-        do{
+        do {
             System.out.println("""
-                    |OPCIONES:             |
-                    |1. Prestar libro      |
-                    |2. Devolver libro     |
-                    |3. Listar prestados   |
-                    |4. Listar disponibles |
-                    |5. Salir              |
-                    """);
-            opcion = EntradaDatos.leerInt("opcion");
+                    |opciones:             |
+                    |1. prestar libro      |
+                    |2. devolver libro     |
+                    |3. listar prestados   |
+                    |4. listar disponibles |
+                    |5. salir              |
+                    """.toUpperCase());
+            opcion = ED.leerInt("opcion");
             switch (opcion){
                 case 1:{
-                    int idCliente = EntradaDatos.leerInt("id cliente");
-                    if(!bd9.existsClient(idCliente)){
-                        System.out.println("cliente no encontrado".toUpperCase());
-                        break;
-                    }
-                    int idBook = EntradaDatos.leerInt("id book");
-                    if(!bd9.existsBook(idBook)){
-                        System.out.println("libro no encontrado".toUpperCase());
-                        break;
-                    }
-                    String code = EntradaDatos.leerString("code");
-
-                    bd9.addLoan(code, idCliente);
+                    int idClient = ED.leerInt("id cliente");
+                    String code = ED.leerString("codigo del libro");
+                    bd9.addLoan(idClient, code);
                     break;
                 }
                 case 2:{
-                    int codeBook = EntradaDatos.leerInt("id libro");
-                    if(!bd9.existsBook(codeBook)){
-                        System.out.println("libro no encontrado".toUpperCase());
-                        break;
-                    }
-                    String codeAfter = String.valueOf(codeBook);
-
-                    bd9.addReturn(codeAfter);
+                    int idBook = ED.leerInt("id del libro");
+                    bd9.addReturn(idBook);
                     break;
                 }
                 case 3:{
-                    List<String> informacion = bd9.borrowedBookList();
+                    ArrayList<String> datos = bd9.borrowedBookList();
 
-                    for(String inf : informacion){
-                        System.out.println(inf+"\n");
+                    for (String d : datos){
+                        System.out.println(d);
                     }
                     break;
                 }
                 case 4:{
-                    List<String> informacion = bd9.availableBooksList();
+                    ArrayList<String> datos = bd9.avaibleBookList();
 
-                    for(String inf : informacion){
-                        System.out.println(inf+"\n");
+                    for(String d : datos){
+                        System.out.println(d);
                     }
                     break;
                 }
                 case 5:{
-                    System.out.println("ADIOS......");
+                    System.out.println("ADIOS...........");
                     break;
                 }
-                default:{
-                    System.out.println("OPCION INVALIDA");
-                }
+                default:
+                    System.out.println("opcion invalida".toUpperCase());
+                    break;
             }
-        }while (opcion != 5);
+        }while(opcion != 5);
     }
 }

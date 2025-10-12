@@ -1,71 +1,68 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
-        ManageStudents ms = new ManageStudents();
+        MgStudent MgS = new MgStudent();
         int opcion;
 
         do {
             System.out.println("""
-                    |OPTION STUDENTS        |
-                    |1. ADD STUDENT         |
-                    |2. DELETE STUDENT      |
-                    |3. MODIFY DATA STUDENT |
-                    |4. VIEW DATA STUDENT   |
-                    |5. VIEW ALL STUDENTS   |
-                    |6. EXIT                |
-                    """);
-            opcion = DataEntry.ReadInt("option");
-            switch (opcion) {
+                    |opciones:           |
+                    |1. matricular       |
+                    |2. dar de baja      |
+                    |3. actualizar datos |
+                    |4. ver estudiante   |
+                    |5. ver estudiantes  |
+                    |6. salir            |
+                    """.toUpperCase());
+            opcion = ED.leerInt("opcion");
+            switch (opcion){
                 case 1:{
-                    String id = DataEntry.ReadString("dni");
-                    String name = DataEntry.ReadString("name");
-                    String lastName = DataEntry.ReadString("last name");
-                    int age = DataEntry.ReadInt("age");
-                    ms.insertStudent(new Student(id,name,lastName,age));
+                    String id = ED.leerString("dni");
+                    String name = ED.leerString("nombre");
+                    String surname = ED.leerString("apellido");
+                    int age = ED.leerInt("edad");
+                    Student st = new Student(id,name,surname,age);
+
+                    MgS.addStudent(st);
                     break;
                 }
                 case 2:{
-                    String id =DataEntry.ReadString("id");
-                    if(ms.deleteStudent(id)){
-                        System.out.println("STUDENT ELIMINATED");
-                    }else{
-                        System.out.println("STUDENT NOT FOUND");
-                    }
+                    MgS.deleteStudent(ED.leerString("dni"));
                     break;
                 }
                 case 3:{
-                    String id = DataEntry.ReadString("id");
-                    String name = DataEntry.ReadString("name");
-                    String lastName = DataEntry.ReadString("last name");
-                    int age = DataEntry.ReadInt("age");
-                    Student st = new Student(id,name,lastName,age);
-                    if(ms.modifyStudent(st)){
-                        System.out.println("STUDENT MODIFY");
-                    }else System.out.println("STUDENT NO MODIFY");
+                    String id = ED.leerString("dni");
+                    String name = ED.leerString("cambio de nombre");
+                    String surname = ED.leerString("cambio de apellido");
+                    int age = ED.leerInt("cambio de edad");
+                    Student st = new Student(id,name,surname,age);
+
+                    MgS.updateStudent(st);
                     break;
+
                 }
                 case 4:{
-                    String id = DataEntry.ReadString("id");
-                    Student st = ms.selectStudent(id);
+                    Student st = MgS.selectStudent(ED.leerString("dni"));
                     System.out.println(st);
                     break;
                 }
                 case 5:{
-                    ArrayList<Student> estudiante = ms.selectAllStudent();
-                    for (Student st : estudiante){
-                        System.out.println(st.toString());
+                    List<Student> students  = MgS.selectAllStudent();
+
+                    for (Student st : students){
+                        System.out.println(st);
                     }
                     break;
                 }
                 case 6:{
-                    System.out.println("BYE.............");
+                    System.out.println("adios".toUpperCase());
                     break;
                 }
-                default:{
-                    System.out.println("OPTION INVALID");
-                }
+                default:
+                    System.out.println("opcion invalida".toUpperCase());
+                    break;
             }
         }while (opcion != 6);
     }

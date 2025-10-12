@@ -1,15 +1,15 @@
 import java.util.Scanner;
 
-public class EntradaDatos {
+public class ED {
 
-    static Scanner SC = new Scanner(System.in);
+    static final Scanner SC = new Scanner(System.in);
 
     public static String leerString(String elemento){
         while(true){
-            System.out.println("INTRODUCE "+elemento.toUpperCase()+":");
+            System.out.println("INTRODUCE "+elemento.toUpperCase());
             String dato = SC.nextLine();
             if(!dato.isEmpty()) return dato;
-            else System.out.println(elemento.toUpperCase()+" INVALIDO");
+            else System.out.print(elemento.toUpperCase()+" INVALIDO");
         }
     }
 
@@ -18,10 +18,10 @@ public class EntradaDatos {
             try{
                 System.out.println("INTRODUCE "+elemento.toUpperCase()+":");
                 int dato = Integer.parseInt(SC.nextLine());
-                if(dato >= 0) return dato;
-                else System.out.println(elemento.toUpperCase()+" INVALIDO");
-            }catch (NumberFormatException e){
-                System.out.println(e.getMessage());
+                if(dato>0) return dato;
+                else System.out.print(elemento.toUpperCase()+" INVALIDO");
+            }catch(NumberFormatException e){
+                System.out.print(e.getMessage());
             }
         }
     }
