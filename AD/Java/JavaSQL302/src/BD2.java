@@ -34,6 +34,7 @@ public class BD2 {
         }
     }
 
+    /*Statement */
     public void selectForProject(){
         String sql = "SELECT * FROM proyecto";
         try(Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)){
