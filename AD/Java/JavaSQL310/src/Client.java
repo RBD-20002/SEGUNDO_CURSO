@@ -13,4 +13,10 @@ public class Client {
     public String getNombre() {
         return nombre;
     }
+
+    public String toString(){
+        return "CLIENTE: "
+                +"\n DNI: "+dni
+                +"\n NOMBRE: "+nombre;
+    }
 }
