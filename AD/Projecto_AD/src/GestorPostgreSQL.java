@@ -46,12 +46,13 @@ public class GestorPostgreSQL {
     }
 
     public void crearMedico(String nombreMedico, String nif, int telefono, String email){
-        String sql = "INSERT INTO hospital.medicos(nombre_medico, contacto) VALUES (?,ROW(?,?,?))";
+        String sql = "INSERT INTO hospital.medicos(nombre_medico, contacto) VALUES (?,ROW(?,?,?,?))";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setString(1,nombreMedico);
-            ps.setString(2,nif);
-            ps.setInt(3,telefono);
-            ps.setString(4,email);
+            ps.setString(2,nombreMedico);
+            ps.setString(3,nif);
+            ps.setInt(4,telefono);
+            ps.setString(5,email);
             ps.executeUpdate();
 
             System.out.println("se agrego medico correctamente".toUpperCase());

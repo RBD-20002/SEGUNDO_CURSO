@@ -25,17 +25,4 @@ public class ED {
             else System.out.print(elemento.toUpperCase()+" INVALIDO");
         }
     }
-
-    public static Double leerDouble(String elemento){
-        while (true){
-            try {
-                System.out.println("INTRODUCE "+elemento.toUpperCase());
-                double dato = Double.parseDouble(SC.nextLine());
-                if(dato > 0) return dato;
-                else System.out.println(elemento.toUpperCase()+" INVALIDO");
-            }catch (NumberFormatException e){
-                System.out.println(e.getMessage());
-            }
-        }
-    }
 }

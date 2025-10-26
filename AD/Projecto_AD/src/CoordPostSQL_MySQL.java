@@ -21,12 +21,20 @@ public class CoordPostSQL_MySQL {
 
     public void crearTratamiento(String nombre, String descripcion, String nombreEspecialidad, String nifMedico){
         try{
+            gestorPostgreSQL.getConnection().setAutoCommit(false);
+            gestorSQL.getConnection().setAutoCommit(false);
+
            int id_especialidad = 0;
            String selectIdEsp = "SELECT id_especialidad FROM hospital.especialidades WHERE nombre_especialidad = ?";
            try(PreparedStatement ps1 = gestorPostgreSQL.getConnection().prepareStatement(selectIdEsp)){
                ps1.setString(1,nombreEspecialidad);
                ResultSet rs = ps1.executeQuery();
-               if(rs.next()) id_especialidad = rs.getInt("id_especialidad");
+               if(rs.next()) {
+                   id_especialidad = rs.getInt("id_especialidad");
+                   System.out.println("ESPECIALIDAD ENCONTRADA - ID: " + id_especialidad);
+               } else {
+                   System.out.println("ESPECIALIDAD NO ENCONTRADA: " + nombreEspecialidad);
+               }
            }
 
            int id_medico = 0;
@@ -34,10 +42,20 @@ public class CoordPostSQL_MySQL {
            try(PreparedStatement ps2 = gestorPostgreSQL.getConnection().prepareStatement(selectIdMed)){
                ps2.setString(1,nifMedico);
                ResultSet rs = ps2.executeQuery();
-               if(rs.next()) id_medico = rs.getInt("id_medico");
+               if(rs.next()) {
+                   id_medico = rs.getInt("id_medico");
+                   System.out.println("MÉDICO ENCONTRADO - ID: " + id_medico);
+               } else {
+                   System.out.println("MÉDICO NO ENCONTRADO CON NIF: " + nifMedico);
+               }
            }
 
-           int id_nuevoTrat = 0;
+            if(id_especialidad == 0 || id_medico == 0){
+                System.out.println("especialidad o medico no encontrado".toUpperCase());
+                return;
+            }
+
+            int id_nuevoTrat = 0;
             String sql = "INSERT INTO tratamientos(nombre_tratamiento,descripcion) VALUES (?,?)";
             try(PreparedStatement ps = gestorSQL.getConnection().prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
                 ps.setString(1,nombre);
@@ -50,11 +68,6 @@ public class CoordPostSQL_MySQL {
                 if(rs.next()) id_nuevoTrat = rs.getInt(1);
             }
 
-            if(id_especialidad == 0 || id_medico == 0){
-                System.out.println("especialidad o medico no encontrado".toUpperCase());
-                return;
-            }
-
             String sqlPostgre = "INSERT INTO hospital.tratamientos(id_tratamiento,id_medico,id_especialidad) VALUES (?,?,?)";
             try(PreparedStatement ps = gestorPostgreSQL.getConnection().prepareStatement(sqlPostgre)) {
                 ps.setInt(1,id_nuevoTrat);
@@ -64,20 +77,49 @@ public class CoordPostSQL_MySQL {
                 ps.executeUpdate();
                 System.out.println("se agrego tratamiento a base datos postgresql".toUpperCase());
             }
+
+            gestorPostgreSQL.getConnection().commit();
+            gestorSQL.getConnection().commit();
+
+            System.out.println("TRANSACCION COMPLETADA EXITOSAMENTE");
             System.out.println("-".repeat(40));
         }catch (SQLException e){
             System.out.println(e.getMessage());
+            try{
+                gestorPostgreSQL.getConnection().rollback();
+                gestorSQL.getConnection().rollback();
+                System.out.println("SE REALIZO ROLLBACK DE LA TRANSACCION");
+            }catch(SQLException rollbackEx){
+                System.out.println("ERROR AL HACER ROLLBACK: " + rollbackEx.getMessage());
+            }
+        }finally{
+            try{
+                gestorPostgreSQL.getConnection().setAutoCommit(true);
+                gestorSQL.getConnection().setAutoCommit(true);
+            }catch(SQLException autoCommitEx){
+                System.out.println("ERROR AL RESTAURAR AUTOCOMMIT: " + autoCommitEx.getMessage());
+            }
         }
     }
 
     public void eliminarTratamientoPorNombre(String nombre){
         try{
+            gestorPostgreSQL.getConnection().setAutoCommit(false);
+            gestorSQL.getConnection().setAutoCommit(false);
+
             int id_tratamiento =0;
             String sIdTrat = "SELECT id_tratamiento FROM tratamientos WHERE nombre_tratamiento = ?";
             try(PreparedStatement ps = gestorSQL.getConnection().prepareStatement(sIdTrat)){
                 ps.setString(1,nombre);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) id_tratamiento = rs.getInt("id_tratamiento");
+            }
+
+            if(id_tratamiento == 0){
+                System.out.println("TRATAMIENTO NO ENCONTRADO");
+                gestorPostgreSQL.getConnection().rollback();
+                gestorSQL.getConnection().rollback();
+                return;
             }
 
             String sql = "DELETE FROM tratamientos WHERE nombre_tratamiento = ?";
@@ -95,9 +137,29 @@ public class CoordPostSQL_MySQL {
                 ps.executeUpdate();
                 System.out.println("tratamiento eliminado en base datos postgresql".toUpperCase());
             }
+
+            gestorPostgreSQL.getConnection().commit();
+            gestorSQL.getConnection().commit();
+
+            System.out.println("ELIMINACION COMPLETADA EXITOSAMENTE");
             System.out.println("-".repeat(40));
         }catch (SQLException e){
             System.out.println(e.getMessage());
+            try{
+                gestorPostgreSQL.getConnection().rollback();
+                gestorSQL.getConnection().rollback();
+                System.out.println("SE REALIZO ROLLBACK DE LA TRANSACCION");
+            }catch(SQLException rollbackEx){
+                System.out.println("ERROR AL HACER ROLLBACK: " + rollbackEx.getMessage());
+            }
+        }finally{
+            try{
+                // Restaurar auto-commit al estado original
+                gestorPostgreSQL.getConnection().setAutoCommit(true);
+                gestorSQL.getConnection().setAutoCommit(true);
+            }catch(SQLException autoCommitEx){
+                System.out.println("ERROR AL RESTAURAR AUTOCOMMIT: " + autoCommitEx.getMessage());
+            }
         }
     }
 
@@ -126,8 +188,11 @@ public class CoordPostSQL_MySQL {
                 }
             }
             System.out.println("-".repeat(40)+"\nresultado:".toUpperCase());
-            for(int i = 0; i < datosSQL.size(); i++){
-                System.out.println(datosSQL.get(i)+datosPostgreSQL.get(i));
+            for(String dato : datosSQL){
+                System.out.println(dato);
+            }
+            for(String dato : datosPostgreSQL){
+                System.out.println(dato);
             }
             System.out.println("-".repeat(40));
         }catch (SQLException e){
