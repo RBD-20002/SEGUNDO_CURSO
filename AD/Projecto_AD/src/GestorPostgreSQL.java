@@ -36,9 +36,10 @@ public class GestorPostgreSQL {
         String sql = "INSERT INTO hospital.especialidades(nombre_especialidad) VALUES (?)";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setString(1,nombreEspecialidad);
-            ps.executeUpdate();
+            int fila = ps.executeUpdate();
+            if(fila > 0) System.out.println("se agrego especialidad correctamente".toUpperCase());
+            else System.out.println("no se agrego ningun ");
 
-            System.out.println("se agrego especialidad correctamente".toUpperCase());
             System.out.println("-".repeat(40));
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -66,9 +67,9 @@ public class GestorPostgreSQL {
         String sql = "DELETE FROM hospital.medicos WHERE id_medico = ?";
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setInt(1,id);
-            ps.executeUpdate();
-
-            System.out.println("se elimino correctamente".toUpperCase());
+            int fila = ps.executeUpdate();
+            if(fila > 0) System.out.println("se elimino correctamente".toUpperCase());
+            else System.out.println("no se encontro ningun medico ");
             System.out.println("-".repeat(40));
         }catch (SQLException e){
             System.out.println(e.getMessage());

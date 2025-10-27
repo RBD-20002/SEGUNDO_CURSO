@@ -14,7 +14,7 @@ public class EntradaDatos {
                 System.out.println("INTRODUCE "+elemento.toUpperCase()+":");
                 int dato = Integer.parseInt(SC.nextLine());
                 if(dato>0) return dato;
-                else System.out.print(elemento.toUpperCase()+" INVALIDO");
+                else System.out.println(elemento.toUpperCase()+" INVALIDO");
             }catch(NumberFormatException e){
                 System.out.print(e.getMessage());
             }
@@ -26,7 +26,7 @@ public class EntradaDatos {
             System.out.println("INTRODUCE "+elemento.toUpperCase());
             String dato = SC.nextLine();
             if(!dato.isEmpty()) return dato;
-            else System.out.print(elemento.toUpperCase()+" INVALIDO");
+            else System.out.println(elemento.toUpperCase()+" INVALIDO");
         }
     }
 
