@@ -52,6 +52,8 @@ public class CoordPostSQL_MySQL {
 
             if(id_especialidad == 0 || id_medico == 0){
                 System.out.println("especialidad o medico no encontrado".toUpperCase());
+                gestorSQL.getConnection().rollback();
+                gestorPostgreSQL.getConnection().rollback();
                 return;
             }
 
@@ -62,7 +64,7 @@ public class CoordPostSQL_MySQL {
                 ps.setString(2,descripcion);
 
                 ps.executeUpdate();
-                System.out.println("se agrego tratamiento a base datos sql".toUpperCase());
+                System.out.println("╔"+"═".repeat(27)+"╗\n TRATAMIENTO AGREGADO EN SQL\n╚"+"═".repeat(27)+"╝");
 
                 ResultSet rs = ps.getGeneratedKeys();
                 if(rs.next()) id_nuevoTrat = rs.getInt(1);
@@ -75,20 +77,19 @@ public class CoordPostSQL_MySQL {
                 ps.setInt(3,id_especialidad);
 
                 ps.executeUpdate();
-                System.out.println("se agrego tratamiento a base datos postgresql".toUpperCase());
+                System.out.println("╔"+"═".repeat(28)+"╗\n TRATAMIENTO AGREGADO EN PSQL\n╚"+"═".repeat(28)+"╝");
             }
 
             gestorPostgreSQL.getConnection().commit();
             gestorSQL.getConnection().commit();
 
-            System.out.println("TRANSACCION COMPLETADA EXITOSAMENTE");
-            System.out.println("-".repeat(40));
+            System.out.println("╔"+"═".repeat(17)+"╗\n INSERCION EXITOSA\n╚"+"═".repeat(17)+"╝");
         }catch (SQLException e){
             System.out.println(e.getMessage());
             try{
                 gestorPostgreSQL.getConnection().rollback();
                 gestorSQL.getConnection().rollback();
-                System.out.println("SE REALIZO ROLLBACK DE LA TRANSACCION");
+                System.out.println("╔"+"═".repeat(22)+"╗\n SE REALIZO UN ROLLBACK\n╚"+"═".repeat(22)+"╝");
             }catch(SQLException rollbackEx){
                 System.out.println("ERROR AL HACER ROLLBACK: " + rollbackEx.getMessage());
             }
@@ -116,7 +117,7 @@ public class CoordPostSQL_MySQL {
             }
 
             if(id_tratamiento == 0){
-                System.out.println("TRATAMIENTO NO ENCONTRADO");
+                System.out.println("╔"+"═".repeat(25)+"╗\nTRATAMIENTO NO ENCONTRADO\n╚"+"═".repeat(25)+"╝");
                 gestorPostgreSQL.getConnection().rollback();
                 gestorSQL.getConnection().rollback();
                 return;
@@ -127,7 +128,7 @@ public class CoordPostSQL_MySQL {
                 ps.setString(1,nombre);
 
                 ps.executeUpdate();
-                System.out.println("tratamiento eliminado en base datos sql".toUpperCase());
+                System.out.println("╔"+"═".repeat(28)+"╗\n TRATAMIENTO ELIMINADO EN SQL\n╚"+"═".repeat(28)+"╝");
             }
 
             String sqlPostgre = "DELETE FROM hospital.tratamientos WHERE id_tratamiento = ?";
@@ -135,20 +136,19 @@ public class CoordPostSQL_MySQL {
                 ps.setInt(1,id_tratamiento);
 
                 ps.executeUpdate();
-                System.out.println("tratamiento eliminado en base datos postgresql".toUpperCase());
+                System.out.println("╔"+"═".repeat(29)+"╗\n TRATAMIENTO ELIMINADO EN PSQL\n╚"+"═".repeat(29)+"╝");
             }
 
             gestorPostgreSQL.getConnection().commit();
             gestorSQL.getConnection().commit();
 
-            System.out.println("ELIMINACION COMPLETADA EXITOSAMENTE");
-            System.out.println("-".repeat(40));
+            System.out.println("╔"+"═".repeat(19)+"╗\n ELIMINACION EXITOSA\n╚"+"═".repeat(19)+"╝");
         }catch (SQLException e){
             System.out.println(e.getMessage());
             try{
                 gestorPostgreSQL.getConnection().rollback();
                 gestorSQL.getConnection().rollback();
-                System.out.println("SE REALIZO ROLLBACK DE LA TRANSACCION");
+                System.out.println("╔"+"═".repeat(22)+"╗\n SE REALIZO UN ROLLBACK\n╚"+"═".repeat(22)+"╝");
             }catch(SQLException rollbackEx){
                 System.out.println("ERROR AL HACER ROLLBACK: " + rollbackEx.getMessage());
             }
@@ -166,35 +166,36 @@ public class CoordPostSQL_MySQL {
     public void listarTratamientosConEspecialidadYMedico(){
         try{
             ArrayList<String> datosSQL = new ArrayList<>();
-            String sql = "SELECT nombre_tratamiento, descripcion FROM tratamientos";
+            String sql = "SELECT id_tratamiento, nombre_tratamiento, descripcion FROM tratamientos ORDER BY id_tratamiento";
             try(Statement st = gestorSQL.getConnection().createStatement(); ResultSet rs = st.executeQuery(sql)){
                 while (rs.next()){
+                    int id = rs.getInt("id_tratamiento");
                     String nombre = rs.getString("nombre_tratamiento");
                     String descripcion = rs.getString("descripcion");
 
-                    datosSQL.add("|NOMBRE: "+nombre+" | DESCRIPCION: "+descripcion+" |");
+                    datosSQL.add(" ID: "+id+" \n NOMBRE: "+nombre+" \n DESCRIPCION: "+descripcion);
                 }
             }
 
             ArrayList<String> datosPostgreSQL = new ArrayList<>();
-            String sqlPostgre = "SELECT id_tratamiento,id_medico,id_especialidad FROM hospital.tratamientos";
+            String sqlPostgre = "SELECT t.id_tratamiento, e.nombre_especialidad, m.nombre_medico, (m.contacto).nif AS nif_medico FROM hospital.tratamientos t JOIN hospital.especialidades e ON t.id_especialidad = e.id_especialidad JOIN hospital.medicos m ON t.id_medico = m.id_medico ORDER BY t.id_tratamiento";
             try(Statement st = gestorPostgreSQL.getConnection().createStatement(); ResultSet rs = st.executeQuery(sqlPostgre)){
                 while(rs.next()){
-                    int tratamiento = rs.getInt("id_tratamiento");
-                    int medico = rs.getInt("id_medico");
-                    int especialidad = rs.getInt("id_especialidad");
+                    int idTratamiento = rs.getInt("id_tratamiento");
+                    String especialidad = rs.getString("nombre_especialidad");
+                    String medico = rs.getString("nombre_medico");
+                    String nifMedico = rs.getString("nif_medico");
 
-                    datosPostgreSQL.add("|CODIGO TRATAMIENTO: "+tratamiento+" | CODIGO MEDICO: "+medico+" | CODIGO ESPECIALIDAD: "+especialidad+" |");
+                    datosPostgreSQL.add(" ESPECIALIDAD: "+especialidad+" \n MEDICO: "+medico+" \n NIF: "+nifMedico);
                 }
             }
-            System.out.println("-".repeat(40)+"\nresultado:".toUpperCase());
-            for(String dato : datosSQL){
-                System.out.println(dato);
-            }
-            for(String dato : datosPostgreSQL){
-                System.out.println(dato);
-            }
-            System.out.println("-".repeat(40));
+            System.out.println("╔"+"═".repeat(82)+"╗\n LISTADO DE ESPECIALIDADES CON MEDICOS:\n╚"+"═".repeat(82)+"╝");
+           for(int i = 0; i < datosSQL.size(); i++){
+               System.out.println("╔"+"═".repeat(82)+"╗");
+               System.out.println(datosSQL.get(i));
+               System.out.println(datosPostgreSQL.get(i));
+               System.out.println("╚"+"═".repeat(82)+"╝");
+           }
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -218,14 +219,14 @@ public class CoordPostSQL_MySQL {
                 for(Integer id_tratamiento : idTratamientos) {
                     ps.setInt(1, id_tratamiento);
 
-                    System.out.println("-".repeat(40)+"\nresultado:".toUpperCase());
+                    System.out.println("╔"+"═".repeat(69)+"╗\n║"+" ".repeat(30)+"RESULTADO"+" ".repeat(30)+"║\n╚"+"═".repeat(69)+"╝");
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
                         int id_paciente = rs.getInt("id_paciente");
                         String nombre_paciente = rs.getString("nombre");
                         String nombre_tratamiento = rs.getString("nombre_tratamiento");
 
-                        System.out.println("|ID PACIENTE: " + id_paciente + " | NOMBRE: " + nombre_paciente + " | TRATAMIENTO: " + nombre_tratamiento + " |");
+                        System.out.println("╔"+"═".repeat(69)+"╗\n  ID PACIENTE: "+id_paciente+" ║ PACIENTE: "+nombre_paciente+" ║ TRATAMIENTO: "+nombre_tratamiento+"\n╚"+"═".repeat(69)+"╝");
                     }
                     System.out.println("-".repeat(40));
                 }

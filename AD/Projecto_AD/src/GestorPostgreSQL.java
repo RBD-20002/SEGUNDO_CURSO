@@ -37,10 +37,10 @@ public class GestorPostgreSQL {
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setString(1,nombreEspecialidad);
             int fila = ps.executeUpdate();
-            if(fila > 0) System.out.println("se agrego especialidad correctamente".toUpperCase());
-            else System.out.println("no se agrego ningun ");
 
-            System.out.println("-".repeat(40));
+            if(fila > 0) System.out.println("╔"+"═".repeat(19)+"╗\n ESPECIALIDAD CREADA\n╚"+"═".repeat(19)+"╝");
+            else System.out.println("╔"+"═".repeat(17)+"╗\n NO SE AGREGO NADA\n╚"+"═".repeat(17)+"╝");
+
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -56,8 +56,7 @@ public class GestorPostgreSQL {
             ps.setString(5,email);
             ps.executeUpdate();
 
-            System.out.println("se agrego medico correctamente".toUpperCase());
-            System.out.println("-".repeat(40));
+            System.out.println("╔"+"═".repeat(13)+"╗\n MEDICO CREADO\n╚"+"═".repeat(13)+"╝");
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -68,27 +67,44 @@ public class GestorPostgreSQL {
         try(PreparedStatement ps = connection.prepareStatement(sql)){
             ps.setInt(1,id);
             int fila = ps.executeUpdate();
-            if(fila > 0) System.out.println("se elimino correctamente".toUpperCase());
-            else System.out.println("no se encontro ningun medico ");
-            System.out.println("-".repeat(40));
+            if(fila > 0) {
+                System.out.println("╔"+"═".repeat(16)+"╗\n"+"║MEDICO ELIMINADO║\n╚"+"═".repeat(16)+"╝");
+            }
+            else System.out.println("╔"+"═".repeat(16)+"╗\n"+"║NO EXISTE ESA ID║\n╚"+"═".repeat(16)+"╝");
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
     public void obtenerCantidadTratamientosPorSala(){
         String sql = "SELECT salas.nombre_sala, COUNT(salas_tratamientos.id_tratamiento) as \"Tratamientos por sala\" FROM hospital.salas JOIN hospital.salas_tratamientos ON salas.id_sala = salas_tratamientos.id_sala GROUP BY salas.id_sala, salas.nombre_sala";
         try(Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(sql)){
-            System.out.println("-".repeat(40)+"\nresultado:".toUpperCase());
+            System.out.println( "╔"+"═".repeat(53)+"╗\n║                      RESULTADO                      ║\n"+"╚"+"═".repeat(53)+"╝");
             while(rs.next()){
                 String nombreSala = rs.getString("nombre_sala");
                 int cantidadPorSala = rs.getInt("tratamientos por sala");
 
-                System.out.println("| SALA: "+nombreSala+" | TRATAMIENTOS DISPONIBLES: "+cantidadPorSala+" |");
+                System.out.println( "╔"+"═".repeat(53)+"╗\n  SALA: "+nombreSala+" ║ TRATAMIENTO DISPONIBLE: "+cantidadPorSala+"\n╚"+"═".repeat(53)+"╝");
             }
-            System.out.println("-".repeat(40));
         }catch (SQLException e){
             System.out.println(e.getMessage());
+        }
+    }
+
+    public void mostrarMedicos(){
+        String pqsl = "SELECT id_medico, nombre_medico FROM hospital.medicos";
+        try(Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(pqsl)){
+            System.out.println( "╔"+"═".repeat(25)+"╗\n RESULTADO:\n"+"╚"+"═".repeat(25)+"╝");
+            System.out.println("╔"+"═".repeat(25)+"╗");
+            while (rs.next()){
+                int id = rs.getInt("id_medico");
+                String nombre = rs.getString("nombre_medico");
+
+                System.out.println(" ID: "+id+" ║ DOCTOR/AR: "+nombre);
+            }
+            System.out.println("╚"+"═".repeat(25)+"╝");
+        }catch (SQLException e){
+            System.err.println(e.getMessage());
         }
     }
 }

@@ -26,7 +26,7 @@ id_cita int auto_increment,
 id_paciente int not null,
 fecha date not null,
 primary key (id_cita),
-foreign key (id_paciente) references pacientes(id_paciente)
+foreign key (id_paciente) references pacientes(id_paciente) on delete cascade on update cascade
 );
 
 create table pacientes_tratamientos(
@@ -44,15 +44,17 @@ on delete cascade on update cascade
 
 /*Pacientes*/
 insert into pacientes(nombre, email, fecha_nacimiento) values
-('Ricardo', 'ricardo@gmail.com', '2002-03-03'),('Juan', 'juan@gmail.com', '1963-10-15'),
-('Edgardo', 'edgardo@gmail.com', '2002-04-04'),('Laura', 'laura@gmail.com', '1990-07-22'),
-('Patricia', 'patricia@gmail.com', '1988-12-01');
+('ricardo', 'ricardo@gmail.com', '2002-03-03'),('juan', 'juan@gmail.com', '1963-10-15'),
+('edgardo', 'edgardo@gmail.com', '2002-04-04'),('laura', 'laura@gmail.com', '1990-07-22'),
+('patricia', 'patricia@gmail.com', '1988-12-01');
 
 /*Tratamientos*/
 insert into tratamientos(id_tratamiento, nombre_tratamiento, descripcion) values
-(1, 'Cirugía Mayor', 'Intervención compleja con anestesia general'),(2, 'Quimioterapia', 'Tratamiento del cáncer'),
-(3, 'Láser Dermatológico', 'Tratamiento de piel con láser'),(4, 'Rehabilitación Neurológica', 'Terapia para recuperación motora'),
-(5, 'Fisioterapia Deportiva', 'Tratamiento de lesiones musculares');
+(1, 'cirugía mayor', 'intervención compleja con anestesia general'),
+(2, 'quimioterapia', 'tratamiento del cáncer'),
+(3, 'laser dermatológico', 'tratamiento de piel con láser'),
+(4, 'rehabilitación neurológica', 'terapia para recuperación motora'),
+(5, 'fisioterapia deportiva', 'tratamiento de lesiones musculares');
 
 /*Citas*/
 insert into citas(id_paciente, fecha) values

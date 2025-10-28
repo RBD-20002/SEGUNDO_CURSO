@@ -46,29 +46,29 @@ create table if not exists hospital.salas_tratamientos(
 id_sala Integer,
 id_tratamiento Integer,
 primary key (id_sala,id_tratamiento),
-foreign key (id_sala) references hospital.salas(id_sala),
-foreign key (id_tratamiento) references hospital.tratamientos(id_tratamiento)
+foreign key (id_sala) references hospital.salas(id_sala) on delete cascade on update cascade,
+foreign key (id_tratamiento) references hospital.tratamientos(id_tratamiento) on delete cascade on update cascade
 );
 
 /*DATOS DE PRUEBA------------------------------------------------------------*/
 
-/*Especialidades*/
 insert into hospital.especialidades(nombre_especialidad) values 
 ('Cardiología'),('Nutrición'),('Dermatología'),('Neurología'),('Fisioterapia');
 
 /*Médicos*/
 insert into hospital.medicos(nombre_medico, contacto) values
-('André', row('André López','11111111A',604219453,'andre@gmail.com')),
-('Beatriz', row('Beatriz Soto','22222222B',600123456,'beatriz@gmail.com')),
-('Carlos', row('Carlos Méndez','33333333C',601987654,'carlos@gmail.com')),
-('Diana', row('Diana Ruiz','44444444D',602555666,'diana@gmail.com')),
-('Elena', row('Elena Vidal','55555555E',603444777,'elena@gmail.com'));
+('andres', row('andres','11111111A',604219453,'andre@gmail.com')),
+('beatriz', row('beatriz','22222222B',600123456,'beatriz@gmail.com')),
+('carlos', row('carlos','33333333C',601987654,'carlos@gmail.com')),
+('diana', row('diana','44444444D',602555666,'diana@gmail.com')),
+('elena', row('elena','55555555E',603444777,'elena@gmail.com'));
 
 /*Salas*/
 insert into hospital.salas(nombre_sala, ubicacion) values
-('Pediatría','Cunqueiro'),('Medicina General','Cunqueiro'),('Urgencias','Cunqueiro'),
-('Rehabilitación','Cunqueiro'),('Fisioterapia','Cunqueiro');
+('pediatria','cunqueiro'),('medicina General','cunqueiro'),('urgencias','cunqueiro'),
+('rehabilitación','cunqueiro'),('fisioterapia','Cunqueiro');
 
+/*Tratamientos*/
 /*Tratamientos*/
 insert into hospital.tratamientos(id_tratamiento, id_medico, id_especialidad) values
 (1, 1, 1),(2, 2, 2),(3, 3, 3),(4, 4, 4),(5, 5, 5);

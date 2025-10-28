@@ -11,22 +11,24 @@ public class Main {
 
         do{
             System.out.println("""
-                    |¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯|
-                    |     opciones de base datos hospital    |
-                    |1. crear nueva especialidad             |
-                    |2. crear nuevo medico                   |
-                    |3. eliminar medico por id               |
-                    |4. crear paciente                       |
-                    |5. eliminar paciente                    |
-                    |6. crear tratamiento                    |
-                    |7. eliminar un tratamiento              |
-                    |8. listar tratamientos                  |
-                    |9. obtener citas por paciente           |
-                    |10. obtener tratamientos por sala       |
-                    |11. listar informacion de tratamientos  |
-                    |12. Obtener pacientes por especialidad  |
-                    |13. salir                               |
-                    |________________________________________|
+                    ╔═════════════════════════════════════════════════════════════════════════════════════════╗
+                    ║                             opciones de base datos hospital                             ║
+                    ╠═════════════════════════════════════════════════════════════════════════════════════════╣
+                    ║ 1.  Crear una nueva especialidad (PostgreSQL)                                           ║
+                    ║ 2.  Crear un nuevo médico (PostgreSQL)                                                  ║
+                    ║ 3.  Eliminar un médico por ID (PostgreSQL)                                              ║
+                    ║ 4.  Crear un nuevo paciente (MySQL)                                                     ║
+                    ║ 5.  Eliminar un paciente (MySQL)                                                        ║
+                    ║ 6.  Crear nuevo tratamiento (MySQL + PostgreSQL)                                        ║
+                    ║ 7.  Eliminar un tratamiento por su nombre (MySQL + PostgreSQL)                          ║
+                    ║ 8.  Listar tratamientos  (MySQL)                                                        ║
+                    ║ 9.  Obtener el total de citas por paciente (MySQL)                                      ║
+                    ║ 10. Obtener cantidad de tratamientos por sala (PostgreSQL)                              ║
+                    ║ 11. Listar tratamientos con especalidades y médicos (MySQL + PostgreSQL)                ║
+                    ║ 12. Obtener pacientes que han recibido tratamiento de especialidad (MySQL + PostgreSQL) ║
+                    ╠═════════════════════════════════════════════════════════════════════════════════════════╣
+                    ║ 13.  salir                                                                              ║
+                    ╚═════════════════════════════════════════════════════════════════════════════════════════╝
                     """.toUpperCase());
             opcion = EntradaDatos.leerInt("opcion a realizar");
             switch (opcion){
@@ -46,6 +48,7 @@ public class Main {
                     break;
                 }
                 case 3:{
+                    gestorPostgre.mostrarMedicos();
                     int id = EntradaDatos.leerInt("id del medico a eliminar");
 
                     gestorPostgre.eliminarMedico(id);
@@ -60,6 +63,7 @@ public class Main {
                     break;
                 }
                 case 5:{
+                    gestorSQL.mostrarPacientes();
                     int id = EntradaDatos.leerInt("id del paciente a eliminar");
 
                     gestorSQL.eliminarPaciente(id);
@@ -75,11 +79,13 @@ public class Main {
                     break;
                 }
                 case 7:{
-                    String nombreTrat = EntradaDatos.leerString("tratamiento a eliminar");
+                    gestorSQL.mostrarTratamientos();
+                    String nombreTrat = EntradaDatos.leerString("nombre de tratamiento a eliminar");
 
                     coordPostSQL_mySQL.eliminarTratamientoPorNombre(nombreTrat);
                     break;
                 }
+                /*DEL 8 AL 13 DE PTMR*/
                 case 8:{
                     int cantidad = EntradaDatos.leerInt("cantidad de pacientes por la que filtrar");
 

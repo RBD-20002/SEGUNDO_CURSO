@@ -16,7 +16,7 @@ public class EntradaDatos {
                 if(dato>0) return dato;
                 else System.out.println(elemento.toUpperCase()+" INVALIDO");
             }catch(NumberFormatException e){
-                System.out.print(e.getMessage());
+                System.out.println(e.getMessage());
             }
         }
     }
