@@ -50,10 +50,10 @@ insert into pacientes(nombre, email, fecha_nacimiento) values
 
 /*Tratamientos*/
 insert into tratamientos(id_tratamiento, nombre_tratamiento, descripcion) values
-(1, 'cirugía mayor', 'intervención compleja con anestesia general'),
-(2, 'quimioterapia', 'tratamiento del cáncer'),
-(3, 'laser dermatológico', 'tratamiento de piel con láser'),
-(4, 'rehabilitación neurológica', 'terapia para recuperación motora'),
+(1, 'cirugia mayor', 'intervencion compleja con anestesia general'),
+(2, 'quimioterapia', 'tratamiento del cancer'),
+(3, 'laser dermatologico', 'tratamiento de piel con laser'),
+(4, 'rehabilitación neurologica', 'terapia para recuperación motora'),
 (5, 'fisioterapia deportiva', 'tratamiento de lesiones musculares');
 
 /*Citas*/

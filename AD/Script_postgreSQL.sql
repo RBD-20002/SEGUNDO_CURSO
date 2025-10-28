@@ -53,7 +53,7 @@ foreign key (id_tratamiento) references hospital.tratamientos(id_tratamiento) on
 /*DATOS DE PRUEBA------------------------------------------------------------*/
 
 insert into hospital.especialidades(nombre_especialidad) values 
-('Cardiología'),('Nutrición'),('Dermatología'),('Neurología'),('Fisioterapia');
+('cardiologia'),('nutricion'),('dermatologia'),('neurologia'),('fisioterapia');
 
 /*Médicos*/
 insert into hospital.medicos(nombre_medico, contacto) values
