@@ -228,7 +228,6 @@ public class CoordPostSQL_MySQL {
 
                         System.out.println("╔"+"═".repeat(69)+"╗\n  ID PACIENTE: "+id_paciente+" ║ PACIENTE: "+nombre_paciente+" ║ TRATAMIENTO: "+nombre_tratamiento+"\n╚"+"═".repeat(69)+"╝");
                     }
-                    System.out.println("-".repeat(40));
                 }
             }
         }catch (SQLException e){
