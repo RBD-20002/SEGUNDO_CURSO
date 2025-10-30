@@ -51,7 +51,11 @@ public class CoordPostSQL_MySQL {
            }
 
             if(id_especialidad == 0 || id_medico == 0){
-                System.out.println("especialidad o medico no encontrado".toUpperCase());
+                System.out.println("╔"+"═".repeat(43)+"╗");
+                System.out.println("║    ESPECIALIDAD O MÉDICO NO ENCONTRADO    ║");
+                System.out.println("║     NO SE CREÓ NINGÚN TRATAMIENTO         ║");
+                System.out.println("╚"+"═".repeat(43)+"╝");
+
                 gestorSQL.getConnection().rollback();
                 gestorPostgreSQL.getConnection().rollback();
                 return;
@@ -126,39 +130,50 @@ public class CoordPostSQL_MySQL {
             String sql = "DELETE FROM tratamientos WHERE nombre_tratamiento = ?";
             try(PreparedStatement ps = gestorSQL.getConnection().prepareStatement(sql)){
                 ps.setString(1,nombre);
+                int filas = ps.executeUpdate();
 
-                ps.executeUpdate();
-                System.out.println("╔"+"═".repeat(28)+"╗\n TRATAMIENTO ELIMINADO EN SQL\n╚"+"═".repeat(28)+"╝");
+                if(filas > 0) System.out.println("╔"+"═".repeat(28)+"╗\n TRATAMIENTO ELIMINADO EN SQL\n╚"+"═".repeat(28)+"╝");
+                else {
+                    System.out.println("╔"+"═".repeat(40)+"╗\n║  TRATAMIENTO NO ENCONTRADO EN MYSQL  ║\n╚"+"═".repeat(40)+"╝");
+                    gestorPostgreSQL.getConnection().rollback();;
+                    gestorSQL.getConnection().rollback();
+                    return;
+                }
             }
 
             String sqlPostgre = "DELETE FROM hospital.tratamientos WHERE id_tratamiento = ?";
-            try(PreparedStatement ps = gestorPostgreSQL.getConnection().prepareStatement(sqlPostgre)){
-                ps.setInt(1,id_tratamiento);
+            try(PreparedStatement ps = gestorPostgreSQL.getConnection().prepareStatement(sqlPostgre)) {
+                ps.setInt(1, id_tratamiento);
+                int filasAfectadasPG = ps.executeUpdate();
+                if (filasAfectadasPG > 0) System.out.println("╔" + "═".repeat(29) + "╗\n TRATAMIENTO ELIMINADO EN PSQL\n╚" + "═".repeat(29) + "╝");
+                else{
+                    System.out.println("╔" + "═".repeat(45) + "╗\n║  TRATAMIENTO NO ENCONTRADO EN POSTGRESQL  ║\n╚" + "═".repeat(45) + "╝");
+                    gestorPostgreSQL.getConnection().rollback();;
+                    gestorSQL.getConnection().rollback();
+                    return;
+                }
 
-                ps.executeUpdate();
-                System.out.println("╔"+"═".repeat(29)+"╗\n TRATAMIENTO ELIMINADO EN PSQL\n╚"+"═".repeat(29)+"╝");
             }
 
             gestorPostgreSQL.getConnection().commit();
             gestorSQL.getConnection().commit();
-
             System.out.println("╔"+"═".repeat(19)+"╗\n ELIMINACION EXITOSA\n╚"+"═".repeat(19)+"╝");
+
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
             try{
                 gestorPostgreSQL.getConnection().rollback();
                 gestorSQL.getConnection().rollback();
-                System.out.println("╔"+"═".repeat(22)+"╗\n SE REALIZO UN ROLLBACK\n╚"+"═".repeat(22)+"╝");
+                System.err.println("╔"+"═".repeat(22)+"╗\n SE REALIZO UN ROLLBACK\n╚"+"═".repeat(22)+"╝");
             }catch(SQLException rollbackEx){
-                System.out.println("ERROR AL HACER ROLLBACK: " + rollbackEx.getMessage());
+                System.err.println(rollbackEx.getMessage());
             }
         }finally{
             try{
-                // Restaurar auto-commit al estado original
                 gestorPostgreSQL.getConnection().setAutoCommit(true);
                 gestorSQL.getConnection().setAutoCommit(true);
-            }catch(SQLException autoCommitEx){
-                System.out.println("ERROR AL RESTAURAR AUTOCOMMIT: " + autoCommitEx.getMessage());
+            }catch(SQLException autoCommit){
+                System.err.println(autoCommit.getMessage());
             }
         }
     }
@@ -219,14 +234,14 @@ public class CoordPostSQL_MySQL {
                 for(Integer id_tratamiento : idTratamientos) {
                     ps.setInt(1, id_tratamiento);
 
-                    System.out.println("╔"+"═".repeat(69)+"╗\n║"+" ".repeat(30)+"RESULTADO"+" ".repeat(30)+"║\n╚"+"═".repeat(69)+"╝");
+                    System.out.println("╔"+"═".repeat(80)+"╗\n║"+" ".repeat(36)+"RESULTADO"+" ".repeat(35)+"║\n╚"+"═".repeat(80)+"╝");
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
                         int id_paciente = rs.getInt("id_paciente");
                         String nombre_paciente = rs.getString("nombre");
                         String nombre_tratamiento = rs.getString("nombre_tratamiento");
 
-                        System.out.println("╔"+"═".repeat(69)+"╗\n  ID PACIENTE: "+id_paciente+" ║ PACIENTE: "+nombre_paciente+" ║ TRATAMIENTO: "+nombre_tratamiento+"\n╚"+"═".repeat(69)+"╝");
+                        System.out.println("╔"+"═".repeat(80)+"╗\n  ID PACIENTE: "+id_paciente+" ║ PACIENTE: "+nombre_paciente+" ║ TRATAMIENTO: "+nombre_tratamiento+"\n╚"+"═".repeat(80)+"╝");
                     }
                 }
             }

@@ -42,7 +42,7 @@ public class GestorPostgreSQL {
             else System.out.println("╔"+"═".repeat(17)+"╗\n NO SE AGREGO NADA\n╚"+"═".repeat(17)+"╝");
 
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -58,7 +58,7 @@ public class GestorPostgreSQL {
 
             System.out.println("╔"+"═".repeat(13)+"╗\n MEDICO CREADO\n╚"+"═".repeat(13)+"╝");
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -87,22 +87,42 @@ public class GestorPostgreSQL {
                 System.out.println( "╔"+"═".repeat(53)+"╗\n  SALA: "+nombreSala+" ║ TRATAMIENTO DISPONIBLE: "+cantidadPorSala+"\n╚"+"═".repeat(53)+"╝");
             }
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
+    /*METODOS ADICIONACIONALES PARA MOSTRAR*/
     public void mostrarMedicos(){
-        String pqsl = "SELECT id_medico, nombre_medico FROM hospital.medicos";
+        String pqsl = "SELECT id_medico, nombre_medico, (contacto).nif FROM hospital.medicos";
         try(Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(pqsl)){
-            System.out.println( "╔"+"═".repeat(25)+"╗\n RESULTADO:\n"+"╚"+"═".repeat(25)+"╝");
-            System.out.println("╔"+"═".repeat(25)+"╗");
+            System.out.println( "╔"+"═".repeat(45)+"╗\n RESULTADO:\n"+"╚"+"═".repeat(45)+"╝");
+            System.out.println("╔"+"═".repeat(45)+"╗");
             while (rs.next()){
                 int id = rs.getInt("id_medico");
                 String nombre = rs.getString("nombre_medico");
-
-                System.out.println(" ID: "+id+" ║ DOCTOR/AR: "+nombre);
+                String nif = rs.getString("nif");
+                System.out.println(" ID: "+id+" ║ DOCTOR/AR: "+nombre+" ║ NIF: "+nif);
             }
-            System.out.println("╚"+"═".repeat(25)+"╝");
+            System.out.println("╚"+"═".repeat(45)+"╝");
+        }catch (SQLException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void mostrarEspecialidades(){
+        String psql = "SELECT id_especialidad, nombre_especialidad FROM hospital.especialidades";
+        try(Statement st = connection.createStatement(); ResultSet rs = st.executeQuery(psql)){
+            System.out.println("╔"+"═".repeat(45)+"╗\n║         ESPECIALIDADES DISPONIBLES          ║\n╚"+"═".repeat(45)+"╝");
+
+            System.out.println("╔"+"═".repeat(45)+"╗");
+            while(rs.next()) {
+                int id = rs.getInt("id_especialidad");
+                String nombre = rs.getString("nombre_especialidad");
+
+                System.out.println(" ID: "+id+" ║ NOMBRE: "+nombre);
+            }
+            System.out.println("╚"+"═".repeat(45)+"╝");
+
         }catch (SQLException e){
             System.err.println(e.getMessage());
         }

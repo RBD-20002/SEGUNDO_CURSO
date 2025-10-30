@@ -55,7 +55,7 @@ public class Main {
                     break;
                 }
                 case 4:{
-                    String nombre = EntradaDatos.leerString("nombre del pacient");
+                    String nombre = EntradaDatos.leerString("nombre del paciente");
                     String email = EntradaDatos.leerString("email de contacto");
                     LocalDate fechaNacimiento = EntradaDatos.leerDate("fecha de nacimiento");
 
@@ -72,7 +72,9 @@ public class Main {
                 case 6:{
                     String nombreTrat = EntradaDatos.leerString("nombre de nuevo tratamiento");
                     String descripcion = EntradaDatos.leerString("descripcion del tratamiento");
+                    gestorPostgre.mostrarEspecialidades();
                     String nombreEspec = EntradaDatos.leerString("nombre de la especialidad");
+                    gestorPostgre.mostrarMedicos();
                     String nifMedico = EntradaDatos.leerString("nif del medico");
 
                     coordPostSQL_mySQL.crearTratamiento(nombreTrat,descripcion,nombreEspec,nifMedico);
@@ -105,6 +107,7 @@ public class Main {
                     break;
                 }
                 case 12:{
+                    gestorPostgre.mostrarEspecialidades();
                     int idEspecialidad = EntradaDatos.leerInt("id de la especialidad");
 
                     coordPostSQL_mySQL.obtenerPacientesPorEspecialidad(idEspecialidad);

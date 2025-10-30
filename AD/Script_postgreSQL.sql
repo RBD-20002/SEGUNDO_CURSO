@@ -10,7 +10,7 @@ create type hospital.contacto_medico as (
 nombre_contacto varchar(40),
 nif varchar(9),
 num_movil int,
-email varchar(20)
+email varchar(40)
 );
 
 create table if not exists hospital.especialidades(
@@ -51,28 +51,50 @@ foreign key (id_tratamiento) references hospital.tratamientos(id_tratamiento) on
 );
 
 /*DATOS DE PRUEBA------------------------------------------------------------*/
-
-insert into hospital.especialidades(nombre_especialidad) values 
-('Cardiología'),('Nutrición'),('Dermatología'),('Neurología'),('Fisioterapia');
+/*Especialidades*/
+insert into hospital.especialidades (nombre_especialidad) values
+('cardiologia'),('neurologia'),('pediatria'),('traumatologia'),
+('dermatologia'),('oncologia'),('urologia'),('ginecologia'),
+('oftalmologia'),('otorrinolaringologia'),('reumatologia'),('endocrinologia');
 
 /*Médicos*/
-insert into hospital.medicos(nombre_medico, contacto) values
-('andres', row('andres','11111111A',604219453,'andre@gmail.com')),
-('beatriz', row('beatriz','22222222B',600123456,'beatriz@gmail.com')),
-('carlos', row('carlos','33333333C',601987654,'carlos@gmail.com')),
-('diana', row('diana','44444444D',602555666,'diana@gmail.com')),
-('elena', row('elena','55555555E',603444777,'elena@gmail.com'));
+insert into hospital.medicos (nombre_medico, contacto) values
+('juan perez', row('juan perez','12345678a',600111111,'jperez@correo.com')),
+('ana lopez', row('ana lopez','12345678b',600111112,'alopez@correo.com')),
+('luis martinez', row('luis martinez','12345678c',600111113,'lmartinez@correo.com')),
+('carmen torres', row('carmen torres','12345678d',600111114,'ctorres@correo.com')),
+('jose fernandez', row('jose fernandez','12345678e',600111115,'jfernandez@correo.com')),
+('marta suarez', row('marta suarez','12345678f',600111116,'msuarez@correo.com')),
+('ricardo ortiz', row('ricardo ortiz','12345678g',600111117,'rortiz@correo.com')),
+('alejandro dominguez', row('alejandro dominguez','12345678h',600111118,'adominguez@correo.com')),
+('lucia navarro', row('lucia navarro','12345678i',600111119,'lnavarro@correo.com')),
+('raul morales', row('raul morales','12345678j',600111120,'rmorales@correo.com')),
+('eva serrano', row('eva serrano','12345678k',600111121,'eserrano@correo.com')),
+('adrian blanco', row('adrian blanco','12345678l',600111122,'ablanco@correo.com'));
 
 /*Salas*/
-insert into hospital.salas(nombre_sala, ubicacion) values
-('pediatria','cunqueiro'),('medicina General','cunqueiro'),('urgencias','cunqueiro'),
-('rehabilitación','cunqueiro'),('fisioterapia','Cunqueiro');
+insert into hospital.salas (nombre_sala, ubicacion) values
+('sala 1', 'planta baja'),
+('sala 2', 'planta baja'),
+('sala 3', 'planta 1'),
+('sala 4', 'planta 1'),
+('sala 5', 'planta 2'),
+('sala 6', 'planta 2'),
+('sala 7', 'planta 3'),
+('sala 8', 'planta 3'),
+('sala 9', 'planta 4'),
+('sala 10', 'planta 4'),
+('sala 11', 'planta 5'),
+('sala 12', 'planta 5');
 
 /*Tratamientos*/
 /*Tratamientos*/
-insert into hospital.tratamientos(id_tratamiento, id_medico, id_especialidad) values
-(1, 1, 1),(2, 2, 2),(3, 3, 3),(4, 4, 4),(5, 5, 5);
+insert into hospital.tratamientos (id_tratamiento, id_medico, id_especialidad) values
+(1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5),(6,6,6),(7,7,7),(8,8,8),(9,9,9),(10,10,10),
+(11,11,11),(12,12,12);
+
 
 /*Salas-Tratamientos*/
-insert into hospital.salas_tratamientos(id_sala, id_tratamiento) values
-(1,1),(2,2),(3,3),(4,4),(5,5);
+insert into hospital.salas_tratamientos (id_sala, id_tratamiento) values
+(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9),(10,10),
+(11,11),(12,12);
