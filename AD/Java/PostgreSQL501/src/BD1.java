@@ -2,16 +2,16 @@ import java.sql.*;
 
 public class BD1 {
 
-    private String url = "jdbc:postgresql://localhost:5432/";
+    private String urlBase = "jdbc:postgresql://localhost:5432/";
     private String user = "postgres";
     private String password = "ricardoBD90-";
     private Connection connection;
 
     public BD1(){
-        openConnection();
+        openConnection(urlBase);
     }
 
-    private void openConnection(){
+    private void openConnection(String url){
         try{
             connection = DriverManager.getConnection(url,user,password);
         }catch (SQLException e){
@@ -28,7 +28,8 @@ public class BD1 {
             System.out.println(e.getMessage());
         }
 
-        String urlLibros = url+"libros";
+        String urlLibros = urlBase+"libros";
+        openConnection(urlLibros);
         try(Connection connLibros = DriverManager.getConnection(urlLibros, user, password); Statement st = connLibros.createStatement()) {
                 st.executeUpdate("CREATE TYPE Autor AS (nombre_autor varchar(50), fecha varchar(10))");
                 st.executeUpdate("""
@@ -39,7 +40,7 @@ public class BD1 {
                     publicacion Integer,
                     PRIMARY KEY (id)
                 )
-            """);
+                """);
         } catch (SQLException e){
             System.out.println(e.getMessage());
         }

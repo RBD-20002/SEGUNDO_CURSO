@@ -2,16 +2,16 @@ import java.sql.*;
 
 public class BD5 {
 
-    private String url = "jdbc:postgresql://localhost:5432/";
+    private String urlBase = "jdbc:postgresql://localhost:5432/";
     private String user = "postgres";
     private String password = "ricardoBD90-";
     private Connection connection;
 
     public BD5(){
-        openConnection();
+        openConnection(urlBase);
     }
 
-    public void openConnection(){
+    public void openConnection(String url){
         try{
             connection = DriverManager.getConnection(url,user,password);
         }catch (SQLException e){
@@ -21,14 +21,24 @@ public class BD5 {
 
     public void crearBD(){
         try(Statement st = connection.createStatement()){
+            st.executeUpdate("DROP DATABASE hospital WITH (FORCE)");
+            System.out.println("se elimino la BD por siacaso");
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        try(Statement st = connection.createStatement()){
             st.executeUpdate("CREATE DATABASE hospital");
             System.out.println("se creo la bd hospital".toUpperCase());
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
 
-        String urlHos = url+"hospital";
-        try(Connection connection = DriverManager.getConnection(urlHos,user,password); Statement st = connection.createStatement()){
+        String urlHos = urlBase+"hospital";
+        openConnection(urlHos);
+
+        try(Statement st = connection.createStatement()){
+            st.executeUpdate("DROP SCHEMA IF EXISTS objetos CASCADE");
             st.executeUpdate("CREATE SCHEMA objetos");
 
             st.executeUpdate("CREATE TYPE objetos.persona AS (nombre varchar(50), edad integer)");
