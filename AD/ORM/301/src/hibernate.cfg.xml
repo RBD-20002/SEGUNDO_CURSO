@@ -2,10 +2,10 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
+
         <!-- CONEXION -->
-        <!-- ATENCION CAMBIA EL NOMBRE DE LA BD -->
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/empleados?createDatabaseIfNotExist=true&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/emp_hibernate301?createDatabaseIfNotExist=true&amp;serverTimezone=UTC</property>
         <property name="connection.username">root</property>
         <property name="connection.password">ricardoBD90-</property>
 
@@ -14,8 +14,8 @@
         <property name="hibernate.dialect.storage_engine">innodb</property>
         <property name="hibernate.show_sql">true</property>
 
-        <!-- MAPEADO DE ENTIDADES -->
-        <mapping class=""/>
-        <mapping class=" "/>
+        <!-- mapeado -->
+        <mapping class="org.example.Entidades.Departamento"/>
+        <mapping class="org.example.Entidades.Empleado"/>
     </session-factory>
 </hibernate-configuration>

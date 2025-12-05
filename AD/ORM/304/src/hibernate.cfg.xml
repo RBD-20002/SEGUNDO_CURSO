@@ -2,20 +2,20 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- CONEXION -->
-        <!-- ATENCION CAMBIA EL NOMBRE DE LA BD -->
+        <!--CONEXION-->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/empleados?createDatabaseIfNotExist=true&amp;serverTimezone=UTC</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/emp_hibernate304?createDatabaseIfNotExist=true&amp;serverTimezone=UTC</property>
         <property name="connection.username">root</property>
         <property name="connection.password">ricardoBD90-</property>
 
-        <!-- CONFIGURACION -->
+        <!--CONFIGURACION-->
         <property name="hbm2ddl.auto">create</property>
         <property name="hibernate.dialect.storage_engine">innodb</property>
         <property name="hibernate.show_sql">true</property>
 
-        <!-- MAPEADO DE ENTIDADES -->
-        <mapping class=""/>
-        <mapping class=" "/>
+        <!--MAPEADO DE ENTIDADES-->
+        <mapping class="org.example.Entidades.Libros"/>
+        <mapping class="org.example.Entidades.Autores"/>
+        <mapping class="org.example.Entidades.Telefonos"/>
     </session-factory>
 </hibernate-configuration>
