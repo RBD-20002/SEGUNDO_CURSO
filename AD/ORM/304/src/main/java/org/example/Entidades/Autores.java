@@ -1,73 +1,52 @@
 package org.example.Entidades;
 
 import jakarta.persistence.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Autores {
 
     @Id
-    private String DNI_autor;
+    private String dni;
 
     private String nombre;
     private String nacionalidad;
 
+    @OneToOne(mappedBy = "autor")
+    private Telefono telefono;
+
     @ManyToMany
     @JoinTable(name = "Libros_Autores",
-        joinColumns = @JoinColumn(name = "DNI_Autor"),
-        inverseJoinColumns = @JoinColumn(name = "id_libro"))
-    public List<Libros> libros = new ArrayList<>();
+        joinColumns = @JoinColumn(name = "id_autor"),
+        inverseJoinColumns = @JoinColumn(name = "id_libro")
+    )
+    private List<Libros> libros = new ArrayList<>();
 
-    @OneToOne(mappedBy = "autor")
-    @JoinColumn(name = "dni_autor")
-    private Telefonos telefono;
 
-    public Autores() {
-    }
-
-    public Autores(String DNI_autor, String nombre, String nacionalidad) {
-        this.DNI_autor = DNI_autor;
+    public Autores(String dni, String nombre, String nacionalidad) {
+        this.dni = dni;
         this.nombre = nombre;
         this.nacionalidad = nacionalidad;
-    }
-
-    public String getDNI_autor() {
-        return DNI_autor;
-    }
-    public void setDNI_autor(String DNI_autor) {
-        this.DNI_autor = DNI_autor;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getNacionalidad() {
-        return nacionalidad;
-    }
-    public void setNacionalidad(String nacionalidad) {
-        this.nacionalidad = nacionalidad;
-    }
-
-    public List<Libros> getLibros() {
-        return libros;
-    }
-    public void setLibros(List<Libros> libros) {
-        this.libros = libros;
-    }
-
-    public void addLibro(Libros libro){
-        libros.add(libro);
-
+        this.libros = new ArrayList<>();
     }
 
     @Override
-    public String toString(){
-        return "DNI: "+DNI_autor+"\nNOMBRE: "+nombre+"\nNACIONALIDAD: "+nacionalidad;
+    public String toString() {
+        return "Autores{" +
+                "dni='" + dni + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", nacionalidad='" + nacionalidad + '\'' +
+                ", telefono=" + telefono +
+                ", libros=" + libros +
+                '}';
     }
 }

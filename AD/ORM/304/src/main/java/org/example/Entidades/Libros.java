@@ -1,11 +1,18 @@
 package org.example.Entidades;
 
 import jakarta.persistence.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Libros {
 
     @Id
@@ -15,47 +22,23 @@ public class Libros {
     private String titulo;
     private double precio;
 
-    @ManyToMany(mappedBy = "libros")
+    @ManyToMany
     private List<Autores> autores = new ArrayList<>();
 
-    public Libros() {
-    }
 
     public Libros(String titulo, double precio) {
         this.titulo = titulo;
         this.precio = precio;
-    }
-
-    public int getId_libro() {
-        return id_libro;
-    }
-    public void setId_libro(int id_libro) {
-        this.id_libro = id_libro;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public List<Autores> getAutores() {
-        return autores;
-    }
-    public void setAutores(List<Autores> autores) {
-        this.autores = autores;
+        this.autores = new ArrayList<>();
     }
 
     @Override
-    public String toString(){
-        return "LIBRO ID: "+id_libro+"\nTITULO: "+titulo+"\nPRECIO: "+precio;
+    public String toString() {
+        return "Libros{" +
+                "id_libro=" + id_libro +
+                ", titulo='" + titulo + '\'' +
+                ", precio=" + precio +
+                ", autores=" + autores +
+                '}';
     }
 }

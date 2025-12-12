@@ -16,6 +16,6 @@
         <!--MAPEADO DE ENTIDADES-->
         <mapping class="org.example.Entidades.Libros"/>
         <mapping class="org.example.Entidades.Autores"/>
-        <mapping class="org.example.Entidades.Telefonos"/>
+        <mapping class="org.example.Entidades.Telefono"/>
     </session-factory>
 </hibernate-configuration>
