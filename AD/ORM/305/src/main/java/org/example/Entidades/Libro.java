@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class Libro {
     private List<Alquiler> alquileres = new ArrayList<>();
 
 
-    public Libro(String codigo, String titulo, String autores, int ano) {
+    public Libro(String codigo, String titulo, String autores, int ano){
         this.codigo = codigo;
         this.titulo = titulo;
         this.autores = autores;

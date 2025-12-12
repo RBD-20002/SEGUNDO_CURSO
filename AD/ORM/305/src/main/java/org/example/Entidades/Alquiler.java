@@ -14,12 +14,11 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Alquiler {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAlquiler;
+    private Integer idAlquiler;
 
     @Column(name = "fecha", columnDefinition = "DATE")
     private LocalDate fecha;
