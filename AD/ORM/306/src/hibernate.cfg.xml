@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- CONEXION -->
+        <!-- ATENCION CAMBIA EL NOMBRE DE LA BD -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/pedidos</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">ricardoBD90-</property>
+
+        <!-- CONFIGURACION -->
+        <property name="hbm2ddl.auto">validate</property>
+        <property name="hibernate.dialect.storage_engine">innodb</property>
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- MAPEADO DE ENTIDADES -->
+        <mapping class="org.example.Entidades.Cliente"/>
+        <mapping class="org.example.Entidades.LineaPedido"/>
+        <mapping class="org.example.Entidades.Pedido"/>
+        <mapping class="org.example.Entidades.Producto"/>
+    </session-factory>
+</hibernate-configuration>
