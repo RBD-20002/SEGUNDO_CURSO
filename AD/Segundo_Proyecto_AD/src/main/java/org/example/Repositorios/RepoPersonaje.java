@@ -45,10 +45,7 @@ public class RepoPersonaje {
                 session.persist(personaje);
                 trans.commit();
                 System.out.println("SE AGREGO NUEVO PERSONAJE "+personaje.getNombre());
-            }else{
-                System.out.println("YA EXISTE EL PERSONAJE "+personaje.getNombre());
-                return;
-            }
+            }System.out.println("YA EXISTE EL PERSONAJE "+personaje.getNombre());
         }catch (Exception e){
             System.err.println(e.getMessage());
             trans.rollback();
