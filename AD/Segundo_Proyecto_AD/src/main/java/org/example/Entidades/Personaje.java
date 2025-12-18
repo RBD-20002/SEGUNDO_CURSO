@@ -16,7 +16,6 @@ import java.util.List;
 public class Personaje {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -26,31 +25,28 @@ public class Personaje {
     @Column(name = "alias", length = 100)
     private String alias;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id",unique = true)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_traje")
     private Traje traje;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Personaje_Habilidad",
-            joinColumns = @JoinColumn(name = "id_Personaje"),
-            inverseJoinColumns = @JoinColumn(name = "id_Habilidad")
+            joinColumns = @JoinColumn(name = "id_personaje"),
+            inverseJoinColumns = @JoinColumn(name = "id_habilidad")
     )
-    private List<Habilidad> habilidad;
-
-    @OneToMany(mappedBy = "personaje", cascade = CascadeType.ALL)
-    private List<Participa> participa = new ArrayList<>();
+    private List<Habilidad> habilidad = new ArrayList<>();
 
 
 
-    public Personaje(String nombre, String alias, Traje traje) {
+    public Personaje(int id, String nombre, String alias, Traje traje) {
+        this.id = id;
         this.nombre = nombre;
         this.alias = alias;
         this.traje = traje;
-        this.habilidad = new ArrayList<>();
     }
 
     @Override
     public String toString(){
-        return "| PERSONAJE ID: "+id+" | NOMBRE: "+nombre+" | ALIAS: "+alias+" | "+traje+" | "+habilidad;
+        return "| PERSONAJE ID: "+id+" | NOMBRE: "+nombre+" | ALIAS: "+alias+" "+traje.toString()+" "+habilidad.toString();
     }
 }

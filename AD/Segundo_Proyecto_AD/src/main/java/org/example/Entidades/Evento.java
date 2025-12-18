@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +15,6 @@ import java.util.List;
 public class Evento {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -26,12 +24,13 @@ public class Evento {
     @Column(name = "lugar", length = 100)
     private String lugar;
 
-    @OneToMany(mappedBy = "evento", cascade = CascadeType.ALL)
-    private List<Participa> participa = new ArrayList<>();
+    @OneToMany(mappedBy = "evento")
+    private List<Participa> participantes;
 
 
 
-    public Evento(String nombre, String lugar) {
+    public Evento(int id, String nombre, String lugar) {
+        this.id = id;
         this.nombre = nombre;
         this.lugar = lugar;
     }

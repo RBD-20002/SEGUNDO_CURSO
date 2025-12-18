@@ -5,17 +5,20 @@
         <!-- CONEXION -->
         <!-- ATENCION CAMBIA EL NOMBRE DE LA BD -->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/empleados?createDatabaseIfNotExist=true&amp;serverTimezone=UTC</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/marveldb</property>
         <property name="connection.username">root</property>
         <property name="connection.password">ricardoBD90-</property>
 
         <!-- CONFIGURACION -->
-        <property name="hbm2ddl.auto">create</property>
+        <property name="hbm2ddl.auto">validate</property>
         <property name="hibernate.dialect.storage_engine">innodb</property>
         <property name="hibernate.show_sql">true</property>
 
         <!-- MAPEADO DE ENTIDADES -->
-        <mapping class=""/>
-        <mapping class=" "/>
+        <mapping class="org.example.Entidades.Evento"/>
+        <mapping class="org.example.Entidades.Habilidad"/>
+        <mapping class="org.example.Entidades.Participa"/>
+        <mapping class="org.example.Entidades.Personaje"/>
+        <mapping class="org.example.Entidades.Traje"/>
     </session-factory>
 </hibernate-configuration>

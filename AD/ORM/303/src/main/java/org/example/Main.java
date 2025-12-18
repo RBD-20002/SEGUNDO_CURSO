@@ -85,8 +85,8 @@ public class Main {
         System.out.println("-".repeat(50));
 
         System.out.println("JEFES ANTES DEL AUMENTO:");
-        System.out.println(emp1.toString());
-        System.out.println(emp3.toString());
+        System.out.println(emp1);
+        System.out.println(emp3);
 
         System.out.println("-".repeat(50));
 
@@ -96,8 +96,8 @@ public class Main {
         session.refresh(emp1);
         session.refresh(emp3);
 
-        System.out.println(emp1.toString());
-        System.out.println(emp3.toString());
+        System.out.println(emp1);
+        System.out.println(emp3);
 
         System.out.println("-".repeat(50));
 
