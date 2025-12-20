@@ -3,7 +3,6 @@ package org.example.Repositorios;
 import org.example.Entidades.Traje;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class RepoTraje {
@@ -49,16 +48,41 @@ public class RepoTraje {
         }
     }
 
+    public boolean trajeDisponible(int id){
+        Transaction trans = session.beginTransaction();
+        try{
+            Traje traje = (Traje) session.createQuery("FROM Traje t WHERE t.id =:id")
+                    .setParameter("id",id)
+                    .uniqueResult();
+            if(traje == null){
+                System.out.println("NO EXISTE TRAJE CON ID "+id);
+                return false;
+            }
+            if(traje.getPersonaje() != null){
+                System.out.println("TRAJE ASIGNADO A "+traje.getPersonaje().getNombre());
+                return false;
+            }
+            return true;
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public Traje selectTraje(int id){
         try{
             Traje traje = (Traje) session.createQuery("FROM Traje t WHERE t.id =:idTraje")
                     .setParameter("idTraje",id)
                     .uniqueResult();
-            if(traje != null) return traje;
-            else {
-                System.out.println("NO HAY TRAJE CON ESE ID");
+            if(traje == null){
+                System.out.println("NO EXISTE TRAJE CON ID "+id);
                 return null;
             }
+            if(traje.getPersonaje() != null){
+                System.out.println("EL TRAJA YA LO ESTA USANDO "+traje.getPersonaje().getNombre());
+                return null;
+            }
+            return traje;
         }catch (Exception e){
             System.err.println(e.getMessage());
             return null;

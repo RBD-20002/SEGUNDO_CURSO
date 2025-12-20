@@ -3,6 +3,7 @@ package org.example.Extra;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class EntradaDatos {
@@ -24,7 +25,7 @@ public class EntradaDatos {
 
     public static String leerString(String elemento){
         while(true){
-            System.out.println("INTRODUCE "+elemento.toUpperCase());
+            System.out.println("INTRODUCE "+elemento.toUpperCase()+":");
             String dato = SC.nextLine();
             if(!dato.isEmpty()) return dato;
             else System.out.print(elemento.toUpperCase()+" INVALIDO");
@@ -35,13 +36,13 @@ public class EntradaDatos {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             while (true){
                 try{
-                    System.out.println("INTRODUCE "+datoIntroducido.toUpperCase()+":");
+                    System.out.println("INTRODUCE "+datoIntroducido.toUpperCase()+":(dd-MM-yyyy)");
                     String dato = SC.nextLine();
                     if(!dato.isEmpty()){
                         LocalDate localDate = LocalDate.parse(dato,formato);
                         return Date.valueOf(localDate); //Para este metodo seria poner una condicional con un patron para validar la fecha
                     }else System.out.println(datoIntroducido.toUpperCase()+" INVALIDO | INGRESA FORMATO VALIDO DE DD-MM-YYYY");
-                }catch (IllegalArgumentException e){
+                }catch (IllegalArgumentException | DateTimeParseException e){
                     System.out.println(e.getMessage());
                 }
             }

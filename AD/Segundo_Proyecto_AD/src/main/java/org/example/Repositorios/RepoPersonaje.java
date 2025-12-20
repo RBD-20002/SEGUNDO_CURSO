@@ -1,10 +1,9 @@
 package org.example.Repositorios;
 
-import org.example.Entidades.Personaje;
-import org.example.Entidades.Traje;
+import org.example.Entidades.*;
+import org.example.Extra.EntradaDatos;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class RepoPersonaje {
@@ -23,7 +22,7 @@ public class RepoPersonaje {
             if(!personajes.isEmpty()){
                 System.out.println("PERSONAJES:");
                 for(Personaje personaje : personajes){
-                    System.out.println("| ID: "+personaje.getId()+" | NOMBRE: "+personaje.getNombre()+" |");
+                    System.out.println("║ ID: "+personaje.getId()+" ║ NOMBRE: "+personaje.getNombre()+" ║");
                 }
             }else{
                 System.out.println("NO HAY PERSONAJES PARA MOSTRAR");
@@ -33,7 +32,7 @@ public class RepoPersonaje {
         }
     }
 
-    /*----------------------------METODOS----------------------------*/
+    /*----------------------------METODOS HIBERNATE----------------------------*/
 
     public void crearPersonaje(Personaje personaje){
         Transaction trans = session.beginTransaction();
@@ -45,7 +44,10 @@ public class RepoPersonaje {
                 session.persist(personaje);
                 trans.commit();
                 System.out.println("SE AGREGO NUEVO PERSONAJE "+personaje.getNombre());
-            }System.out.println("YA EXISTE EL PERSONAJE "+personaje.getNombre());
+            }else{
+                System.out.println("YA EXISTE EL PERSONAJE "+personaje.getNombre());
+                trans.rollback();
+            }
         }catch (Exception e){
             System.err.println(e.getMessage());
             trans.rollback();
@@ -110,4 +112,41 @@ public class RepoPersonaje {
             trans.rollback();
         }
     }
+
+    public void infoTotalPersonaje(int id){
+        try {
+            Personaje personaje = (Personaje) session.createQuery("FROM Personaje p WHERE p.id =:id")
+                    .setParameter("id",id)
+                    .uniqueResult();
+            if(personaje == null){
+                System.out.println("LA ID INTRODUCIDA ES INVALIDA");
+                return;
+            }
+            List<Participa> participaciones = (List<Participa>) session.createQuery("SELECT pa FROM Participa pa WHERE pa.idParticipa.idPersonaje =:id")
+                    .setParameter("id",id)
+                    .getResultList();
+
+            System.out.println(personaje);
+
+            if(!participaciones.isEmpty()){
+                System.out.println("║  INFORMACION DE SU PARTICIPACIONES ║");
+                for(Participa participa : participaciones){
+                    Evento evento = (Evento) session.createQuery("FROM Evento e WHERE e.id =:idEvento")
+                            .setParameter("idEvento",participa.getIdParticipa().getIdEvento())
+                            .uniqueResult();
+
+                    System.out.println("║ BATALLA:: "+participa.getEvento().getNombre()+" ║\n║ LUGAR:  "+participa.getEvento().getLugar()+" ║\n║ FECHA: "+participa.getFecha()+" ║\n║ ROL:"+participa.getRol()+" ║");
+                }
+            }else{
+                System.out.println("║  EL PERSONAJE NO PARTICIPO EN NINGUN EVENTO  ║");
+            }
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /*-------------------------------------METODO JAVA-------------------------------------*/
+
+
 }
+

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -39,6 +38,9 @@ public class Habilidad {
 
     @Override
     public String toString(){
-        return "| HABILIDAD ID: "+id+" | NOMBRE: "+nombre+" | DESCRIPCION: "+descripcion+" |";
+        return  "║        HABILIDAD        ║"+
+                "\n║ HABILIDAD ID: "+ id +" ║"+
+                "\n║ NOMBRE: "+ nombre +" ║"+
+                "\n║ DESCRIPCION: "+ (descripcion != null ? descripcion : "N/A") +" ║\n";
     }
 }

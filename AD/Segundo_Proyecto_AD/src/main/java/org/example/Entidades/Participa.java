@@ -34,14 +34,18 @@ public class Participa {
 
 
 
-    public Participa(int idPersonaje, int idEvento, Date fecha, String rol) {
-        this.idParticipa = new ParticipaId(idPersonaje,idEvento);
+    public Participa(Personaje personaje, Evento evento, Date fecha, String rol) {
+        this.idParticipa = new ParticipaId(personaje.getId(),evento.getId());
+        this.personaje = personaje;
+        this.evento = evento;
         this.fecha = fecha;
         this.rol = rol;
     }
 
     @Override
     public String toString(){
-        return idParticipa.toString()+" | FECHA: "+fecha+" | ROL: "+rol+" |";
+        return "║      PARTICIPA      ║"+
+                "║ FECHA: "+ fecha +" ║"+
+                "\n║ ROL: "+ rol +" ║\n";
     }
 }

@@ -3,7 +3,6 @@ package org.example.Repositorios;
 import org.example.Entidades.Evento;
 import org.example.Entidades.Personaje;
 import org.hibernate.Session;
-
 import java.util.List;
 
 public class RepoEvento {
@@ -44,7 +43,7 @@ public class RepoEvento {
                 if(personajes != null){
                     System.out.println("PARTICIPARON EN "+nombreEvento);
                     for(Personaje personaje : personajes){
-                        System.out.println("| NOMBRE: "+personaje.getNombre()+" |");
+                        System.out.println("║ NOMBRE: "+personaje.getNombre()+" ║");
                     }
                 }else{
                     System.out.println("NO HAY REGISTRO QUE ALGUN PERSONAJE HAYA PARTICIPADO EN EL EVENTO "+nombreEvento);

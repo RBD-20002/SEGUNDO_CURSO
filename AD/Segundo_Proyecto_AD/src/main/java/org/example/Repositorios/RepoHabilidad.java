@@ -4,7 +4,6 @@ import org.example.Entidades.Habilidad;
 import org.example.Entidades.Personaje;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
 import java.util.List;
 
 public class RepoHabilidad {
@@ -61,7 +60,8 @@ public class RepoHabilidad {
         Transaction trans = session.beginTransaction();
         try{
             Habilidad existe = (Habilidad) session.createQuery("FROM Habilidad h WHERE h.nombre =:nombreHab")
-                    .setParameter("nombreHab",nombre);
+                    .setParameter("nombreHab",nombre)
+                    .uniqueResult();
             if(existe != null){
                 session.remove(existe);
                 System.out.println("SE ELIMINO CORRECTAMENTE HABILIDAD");

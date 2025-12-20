@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.List;
 
 @Entity
@@ -37,6 +36,9 @@ public class Evento {
 
     @Override
     public String toString(){
-        return "| EVENTO ID: "+id+" | NOMBRE: "+nombre+" | LUGAR: "+lugar+" |";
+        return  "║      EVENTO      ║"+
+                "\n║ EVENTO ID: "+ id +"  ║" +
+                "\n║ NOMBRE: "+ nombre +" ║"+
+                "\n║ LUGAR: "+ (lugar != null ? lugar : "N/A") +" ║\n";
     }
 }

@@ -31,6 +31,8 @@ public class Traje {
 
     @Override
     public String toString(){
-        return "| TRAJE ID: "+id+" | ESPECIFICACION: "+especificacion;
+        return  "║        TRAJE        ║"+
+                "\n║ TRAJE ID: "+ id +" ║"+
+                "\n║ ESPECIFICACION: "+ especificacion +" ║";
     }
 }

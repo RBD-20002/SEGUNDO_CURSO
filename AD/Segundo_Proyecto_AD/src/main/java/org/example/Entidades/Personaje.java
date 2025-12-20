@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +46,22 @@ public class Personaje {
 
     @Override
     public String toString(){
-        return "| PERSONAJE ID: "+id+" | NOMBRE: "+nombre+" | ALIAS: "+alias+" "+traje.toString()+" "+habilidad.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append("║      PERSONAJE      ║\n")
+                .append("║ ID: "+id+" ║\n")
+                .append("║ NOMBRE: "+nombre+" ║\n")
+                .append("║ ALIAS: "+alias+" ║\n");
+        if(traje != null){
+            sb.append(traje.toString());
+        }
+        sb.append("║      HABILIDADES      ║\n");
+                if(!habilidad.isEmpty()){
+                    for(Habilidad hab : habilidad){
+                        sb.append("║ "+hab.getNombre()+" ║");
+                    }
+                }else{
+                    sb.append("║      SIN HABILIDADES      ║\n");
+                }
+                return sb.toString();
     }
 }
