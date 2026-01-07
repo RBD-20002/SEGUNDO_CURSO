@@ -111,6 +111,7 @@ public class RepoHabilidad {
                             if(!personaje.getHabilidad().contains(habilidad)){
 
                                 personaje.getHabilidad().add(habilidad);
+                                habilidad.getPersonajes().add(personaje);
                                 session.merge(personaje);
                                 trans.commit();
                                 System.out.println("SE ASIGNO CORRECTAMENTE LA HABILIDAD DE "+nombreHabilidad+" AL PERSONAJE "+nombrePersonaje);

@@ -6,6 +6,7 @@ import org.example.Repositorios.*;
 import org.example.Servicios.ServicioEvento;
 import org.example.Servicios.ServicioHabilidad;
 import org.example.Servicios.ServicioPersonaje;
+import org.example.Servicios.ServicioTraje;
 import org.hibernate.Session;
 
 public class Main {
@@ -21,6 +22,7 @@ public class Main {
         ServicioPersonaje servicioPersonaje = new ServicioPersonaje(repoPersonaje, repoTraje);
         ServicioHabilidad servicioHabilidad = new ServicioHabilidad(repoHabilidad, repoPersonaje);
         ServicioEvento servicioEvento = new ServicioEvento(repoEvento, repoParticipa, repoPersonaje);
+        ServicioTraje servicioTraje = new ServicioTraje(repoTraje);
 
         int opcion;
         do {
@@ -35,7 +37,7 @@ public class Main {
                 case 6 -> servicioHabilidad.modificarHabilidad();
                 case 7 -> servicioHabilidad.asignarHabilidad();
                 case 8 -> servicioEvento.registrarParticipacion();
-                case 9 -> System.out.println("as");
+                case 9 -> servicioTraje.cambiarTrajePersonaje();
                 case 10 -> servicioPersonaje.mostrarDatosPersonaje();
                 case 11 -> servicioEvento.filtrarPersonajesPorEvento();
                 case 12 -> servicioHabilidad.contarPorHabilidad();

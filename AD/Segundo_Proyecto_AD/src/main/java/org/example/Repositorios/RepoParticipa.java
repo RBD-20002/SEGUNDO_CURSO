@@ -36,6 +36,7 @@ public class RepoParticipa {
             }
 
             Participa participa = new Participa(idPersonaje,idEvento,fecha,rol);
+            idEvento.getParticipantes().add(participa);
             session.persist(participa);
             System.out.println("SE REGISTRO CORRECTAMENTE LA PARTICIPACION");
             trans.commit();
