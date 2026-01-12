@@ -24,7 +24,7 @@ public class Personaje {
     @Column(name = "alias", length = 100)
     private String alias;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_traje")
     private Traje traje;
 

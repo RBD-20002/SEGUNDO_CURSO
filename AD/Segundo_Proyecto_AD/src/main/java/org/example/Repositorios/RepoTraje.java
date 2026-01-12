@@ -49,40 +49,40 @@ public class RepoTraje {
         }
     }
 
-    public void cambiarTraje(String nombrePersonaje, String nombreTraje) {
+    public void cambiarTraje(String nombrePersonaje, String especificacionTraje) {
         Transaction trans = session.beginTransaction();
         try {
-            // Buscar el personaje
             Personaje personaje = (Personaje) session.createQuery("FROM Personaje p WHERE p.nombre =:nombre")
                     .setParameter("nombre", nombrePersonaje)
                     .uniqueResult();
+
             if (personaje == null) {
                 System.out.println("EL PERSONAJE INTRODUCIDO NO EXISTE");
                 trans.rollback();
                 return;
             }
 
-            // Buscar el traje
-            Traje traje = (Traje) session.createQuery("FROM Traje t WHERE t.nombre =:nombre")
-                    .setParameter("nombre", nombreTraje)
+            Traje traje = (Traje) session.createQuery("FROM Traje t WHERE t.especificacion =:especificacion")
+                    .setParameter("especificacion", especificacionTraje)
                     .uniqueResult();
+
             if (traje == null) {
                 System.out.println("EL TRAJE INTRODUCIDO NO EXISTE");
                 trans.rollback();
                 return;
             }
 
-            // Cambiar el traje
             personaje.setTraje(traje);
             session.merge(personaje);
             trans.commit();
-            System.out.println("EL TRAJE DEL PERSONAJE " + nombrePersonaje + " SE CAMBIO CORRECTAMENTE A " + nombreTraje);
 
+            System.out.println("EL TRAJE DEL PERSONAJE "+nombrePersonaje+" SE CAMBIO CORRECTAMENTE");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             trans.rollback();
         }
     }
+
 
     /*----------------------------METODOS EXTRAS----------------------------*/
 

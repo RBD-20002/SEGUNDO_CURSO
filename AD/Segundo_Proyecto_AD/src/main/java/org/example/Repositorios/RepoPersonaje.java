@@ -72,46 +72,41 @@ public class RepoPersonaje {
         }
     }
 
-    public void modificarPersonaje(int idPersonaje, String alias, int idTraje){
+    public void modificarPersonaje(int idPersonaje, String alias, int idTraje) {
         Transaction trans = session.beginTransaction();
-        try{
-            Traje traje = (Traje) session.createQuery("FROM Traje t WHERE t.id =:idTraje")
-                    .setParameter("idTraje",idTraje)
+        try {
+            Personaje personaje = (Personaje) session.createQuery("FROM Personaje p WHERE p.id =:id")
+                    .setParameter("id", idPersonaje)
                     .uniqueResult();
-            if(traje == null){
+
+            if (personaje == null) {
+                System.out.println("NO EXISTE PERSONAJE CON ID: " + idPersonaje);
+                trans.rollback();
+                return;
+            }
+
+            Traje traje = (Traje) session.createQuery("FROM Traje t WHERE t.id =:idTraje")
+                    .setParameter("idTraje", idTraje)
+                    .uniqueResult();
+
+            if (traje == null) {
                 System.out.println("NO EXISTE TRAJE CON ESA ID");
                 trans.rollback();
                 return;
             }
 
-            Personaje personajeConTraje = (Personaje) session.createQuery("FROM Personaje p WHERE p.traje.id =:idTraje AND p.id !=:idPersonaje")
-                    .setParameter("idTraje",idTraje)
-                    .setParameter("idPersonaje",idPersonaje)
-                    .uniqueResult();
+            personaje.setAlias(alias);
+            personaje.setTraje(traje);
+            session.merge(personaje);
+            trans.commit();
 
-            if(personajeConTraje != null){
-                System.out.println("EL TRAJE CON ID "+idTraje+" LO TIENE EN USO EL PERSONAJE CON ID "+idPersonaje);
-                trans.rollback();
-                return;
-            }
-
-            int filaAfectada = session.createQuery("UPDATE Personaje p SET p.alias =:alias, p.traje.id =:idTraje WHERE p.id =:idPersonaje")
-                    .setParameter("alias",alias)
-                    .setParameter("idTraje",idTraje)
-                    .setParameter("idPersonaje",idPersonaje)
-                    .executeUpdate();
-            if(filaAfectada > 0){
-                System.out.println("SE MODIFICO DATOS DEL PERSONAJE CON ID: "+idPersonaje);
-                trans.commit();
-            }else{
-                System.out.println("NO EXISTE PERSONAJE CON ID: "+idPersonaje);
-                trans.rollback();
-            }
-        }catch (Exception e){
+            System.out.println("SE MODIFICÓ CORRECTAMENTE EL PERSONAJE");
+        } catch (Exception e) {
             System.err.println(e.getMessage());
             trans.rollback();
         }
     }
+
 
     public void infoTotalPersonaje(int id){
         try {
@@ -144,9 +139,4 @@ public class RepoPersonaje {
             System.err.println(e.getMessage());
         }
     }
-
-    /*-------------------------------------METODO JAVA-------------------------------------*/
-
-
 }
-
