@@ -15,7 +15,11 @@
         <property name="hibernate.show_sql">true</property>
 
         <!-- MAPEADO DE ENTIDADES -->
-        <mapping class=""/>
-        <mapping class=" "/>
+        <mapping class="org.example.Entidades."/>
+        <mapping class="org.example.Entidades."/>
+        <mapping class="org.example.Entidades."/>
+        <mapping class="org.example.Entidades."/>
+        <mapping class="org.example.Entidades."/>
+        <mapping class="org.example.Entidades."/>
     </session-factory>
 </hibernate-configuration>
