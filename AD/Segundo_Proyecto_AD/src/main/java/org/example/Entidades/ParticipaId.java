@@ -2,14 +2,10 @@ package org.example.Entidades;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.io.Serializable;
 
 @Embeddable
-@Setter
-@Getter
 @NoArgsConstructor
 public class ParticipaId implements Serializable {
 
