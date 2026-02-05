@@ -45,10 +45,47 @@ public class BaseX {
 
     public void eliminarCliente(int id){
         try{
-            String path = "cliente_"+id+".xml";
+            String path = "clientes/cliente_"+id+".xml";
 
             session.execute("xquery db:delete('clientes','"+path+"')");
 
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void filtrarCliente(String id){
+        try{
+            String xQuery = "for $cliente in collection('clientes')/clientes/cliente " +
+                    "where $cliente/@id = '" + id + "' " +
+                    "return <Cliente>" +
+                    "<nombre>{$cliente/nombre}</nombre>" +
+                    "</Cliente>";
+            String resultado = session.execute("xquery "+xQuery);
+            System.out.println(resultado);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void modificarEdad(String id, int edad){
+        try{
+            String xQuery = "replace value of node "+
+                    "collection('clientes')/clientes/cliente[@id='" +id+"']/edad "+
+                    "with "+edad;
+            String resultado = session.execute("xquery "+xQuery);
+            System.out.println(resultado);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void eliminarSegunNacionalidad(String nacionalidad){
+        try{
+            String xQuery = "delete nodes collection('clientes')/clientes/cliente[@nacionalidad='"+ nacionalidad +"']";
+
+            String resultado = session.execute("xquery "+xQuery);
+            System.out.println(resultado);
         }catch (Exception e){
             System.err.println(e.getMessage());
         }

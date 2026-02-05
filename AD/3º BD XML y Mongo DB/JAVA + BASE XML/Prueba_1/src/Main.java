@@ -15,9 +15,20 @@ public class Main {
         }
 
         for (int i = 0; i < 3; i++) {
-            baseX.listarClientes();
             int id = ED.leerInt("id a eliminar");
             baseX.eliminarCliente(id);
         }
+
+        baseX.listarClientes();
+
+        String id = ED.leerString("id para mostrar");
+        baseX.filtrarCliente(id);
+
+        String id2 = ED.leerString("id a modificar edad");
+        int edad = ED.leerInt("edad nueva");
+        baseX.modificarEdad(id2,edad);
+
+        String nacionalidad = ED.leerString("nacionalidad a eliminar");
+        baseX.eliminarSegunNacionalidad(nacionalidad);
     }
 }
