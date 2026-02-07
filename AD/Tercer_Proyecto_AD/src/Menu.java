@@ -53,7 +53,10 @@ public class Menu {
                 ╔═════════════════════════════════╗
                 ║   selecciona dato a modificar   ║
                 ╠═════════════════════════════════╣
-                ║║
+                ║1. nombre                        ║
+                ║2. email                         ║
+                ║3. direccion                     ║
+                ║0. cancelar                      ║
                 ╚═════════════════════════════════╝
                 """.toUpperCase()
         );
