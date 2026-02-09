@@ -1,6 +1,7 @@
 import com.mongodb.client.*;
 import org.bson.Document;
 
+
 public class ManagerMongoDB {
 
     private MongoClient mongoClient;
