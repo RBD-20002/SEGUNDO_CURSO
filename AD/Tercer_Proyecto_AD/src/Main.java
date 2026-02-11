@@ -104,7 +104,9 @@ public class Main {
                     break;
                 }
                 case 14:{
-                    System.out.println("falta 14");
+                    int id = ED.leerInt("id del cliente para mostrar pedidos");
+
+                    mongoDB.mostrarPedidoCliente(id);
                     break;
                 }
                 case 15:{
@@ -112,11 +114,11 @@ public class Main {
                     break;
                 }
                 case 16:{
-                    System.out.println("falta 16");
+                    mongoDB.consulta1();
                     break;
                 }
                 case 17:{
-                    System.out.println("falta 17");
+                    mongoDB.consulta2();
                     break;
                 }
                 case 18:{

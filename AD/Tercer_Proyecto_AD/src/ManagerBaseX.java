@@ -77,9 +77,10 @@ public class ManagerBaseX {
             String resultado = session.execute("xquery "+comprobracion);
 
             if(resultado == null && resultado.isEmpty()){
+                System.out.println("NO SE ELIMINO PRODUCTO");
+            }else{
                 System.out.println("Se elimino el producto con id: "+id);
-            }else System.out.println("NO SE ELIMINO PRODUCTO");
-
+            }
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
@@ -112,7 +113,7 @@ public class ManagerBaseX {
     public void consulta2(int cantidadFiltrar){
         try{
             String xQuery = "for $p in collection('productos')/productos/producto "+
-                            "where $p/disponibilidad > "+cantidadFiltrar+
+                            "where $p/disponibilidad > "+cantidadFiltrar+" "+
                             "return "+
                             "<producto>\n"+
                             "   <id>{$p/id}</id>\n"+

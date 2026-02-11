@@ -1,10 +1,12 @@
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
-import org.basex.core.cmd.List;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class ManagerMongoDB {
@@ -61,7 +63,7 @@ public class ManagerMongoDB {
         }
     }
 
-    /*-----------------------MODIFICAR CAMPO-----------------------*/
+    /*----------------------------------MODIFICAR CAMPO---------------------------------*/
 
     public void modificarCampo(int id, String campo, Object nuevoValor){
         try{
@@ -89,41 +91,7 @@ public class ManagerMongoDB {
         };
     }
 
-    /*-------------------------------------------------------------------*/
-
-    public void mostrarCarritoCliente(int id){
-        try{
-            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
-
-            Document clienteBuscado = clientes.find(Filters.eq("_id",id)).first();
-            if(clienteBuscado == null){
-                System.out.println("No se encontro cliente con id "+id);
-                return;
-            }
-
-            ArrayList<Document> carrito = (ArrayList<Document>) clienteBuscado.get("carrito");
-            if(carrito.isEmpty()){
-                System.out.println("El carrito del cliente esta vacio");
-                return;
-            }
-
-            double total = 0;
-            System.out.println("Carrito del cliente: ");
-            for(Document producto : carrito){
-                int cantidad = producto.getInteger("cantidad");
-                double precio = producto.getDouble("precio_unitario");
-                System.out.println("Producto: "+producto.getString("nombre")+" | Cantidad: "+cantidad+" | Precio Unitario: "+precio);
-                total += precio * cantidad;
-            }
-
-            System.out.println("Total del carrito es: "+total);
-        }catch (Exception e){
-            System.err.println(e.getMessage());
-        }
-    }
-
-    public void mostrarPedidoCliente(){
-    }
+    /*--------------------------------------------------------------------------------------*/
 
     /*------------------------------METODOS DE BaseX + MongoDB------------------------------*/
 
@@ -175,16 +143,129 @@ public class ManagerMongoDB {
 
     /*---------------------------------------------------------------------------------------------------------*/
 
+    public void mostrarCarritoCliente(int id){
+        try{
+            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
+
+            Document clienteBuscado = clientes.find(Filters.eq("_id",id)).first();
+            if(clienteBuscado == null){
+                System.out.println("No se encontro cliente con id "+id);
+                return;
+            }
+
+            ArrayList<Document> carrito = (ArrayList<Document>) clienteBuscado.get("carrito");
+            if(carrito.isEmpty()){
+                System.out.println("El carrito del cliente esta vacio");
+                return;
+            }
+
+            System.out.println("Carrito del cliente: ");
+            System.out.println(carrito);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void mostrarPedidoCliente(int id){
+        try{
+            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
+
+            Document cliente = clientes.find(Filters.eq("_id",id)).first();
+            if(cliente == null){
+                System.out.println("No se encontro cliente con id "+id);
+                return;
+            }
+
+            System.out.println("Pedidos del cliente "+cliente.getString("nombre"));
+
+            List<Document> pedidos = (List<Document>) cliente.get("pedidos");
+            if (pedidos == null || pedidos.isEmpty()) {
+                System.out.println("El cliente no tiene pedidos.");
+                return;
+            }
+            System.out.println(pedidos);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
     public void pagarCarrito(){
     }
 
     public void consulta1(){
+        try{
+            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
+            FindIterable<Document> listaClientes = clientes.find();
+
+            List<Document> resultados = new ArrayList<>();
+
+            for(Document cliente : listaClientes){
+                String nombre = cliente.getString("nombre");
+
+                List<Document> carrito = (List<Document>) cliente.get("carrito");
+                double totalCarrito = 0;
+
+                if(carrito != null){
+                    for(Document producto : carrito){
+                        Double precio = producto.getDouble("precio_unitario");
+                        if(precio != null){
+                            totalCarrito +=precio;
+                        }
+                    }
+                }
+
+                Document resultadoFinal = new Document()
+                        .append("nombre",nombre)
+                        .append("totalCarrito",totalCarrito);
+                resultados.add(resultadoFinal);
+            }
+
+            resultados.sort(Comparator.comparingDouble(cliente -> cliente.getDouble("totalCarrito")));
+
+            for(Document resultado : resultados){
+                System.out.println("Cliente: "+resultado.getString("nombre")+" | Total Carrito: "+resultado.getDouble("totalCarrito"));
+            }
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 
     public void consulta2(){
+        try{
+            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
+            FindIterable<Document> listaClientes = clientes.find();
+
+            for(Document cliente : listaClientes){
+                String nombre = cliente.getString("nombre");
+
+                List<Document> pedidos = (List<Document>) cliente.get("pedidos");
+                double total = 0;
+
+                if(pedidos != null){
+                    for(Document pedido : pedidos){
+                        Double totalPedido = pedido.getDouble("total");
+                        if(totalPedido != null){
+                            total += totalPedido;
+                        }
+                    }
+                }
+                System.out.println("Cliente: " + nombre + " | Total gastado: " + total);
+            }
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 
     public void elimminarCliente(int id){
+        try{
+            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
 
+            DeleteResult borrarCliente = clientes.deleteOne(Filters.eq("_id",id));
+            if(borrarCliente.getDeletedCount() == 0){
+                System.out.println("No se encontro el cliente el cual eliminar");
+            }else System.out.println("Se elimino el cliente con id "+id);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
     }
 }
