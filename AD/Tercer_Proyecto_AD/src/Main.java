@@ -10,6 +10,7 @@ public class Main {
             opcion = ED.leerInt("opcion");
             switch (opcion){
                 case 1:{
+                    System.out.println(xml.listarProductos());
                     int id = ED.leerInt("id del producto a modificar");
 
                     Menu.datosModificableXML();
@@ -56,6 +57,7 @@ public class Main {
                     break;
                 }
                 case 8:{
+                    mongoDB.listarCliente();
                     int id = ED.leerInt("id del nuevo cliente");
                     String nombre = ED.leerString("nombre del nuevo cliente");
                     String email = ED.leerString("email del nuevo cliente");
@@ -69,12 +71,14 @@ public class Main {
                     break;
                 }
                 case 10:{
+                    mongoDB.listarCliente();
                     int id = ED.leerInt("id cliente a eliminar");
 
                     mongoDB.elimminarCliente(id);
                     break;
                 }
                 case 11:{
+                    mongoDB.listarCliente();
                     int id = ED.leerInt("id cliente");
 
                     Menu.datosModificableMongoDB();
@@ -98,19 +102,24 @@ public class Main {
                     break;
                 }
                 case 13:{
+                    mongoDB.listarCliente();
                     int clienteId = ED.leerInt("id cliente");
 
                     mongoDB.mostrarCarritoCliente(clienteId);
                     break;
                 }
                 case 14:{
+                    mongoDB.listarCliente();
                     int id = ED.leerInt("id del cliente para mostrar pedidos");
 
                     mongoDB.mostrarPedidoCliente(id);
                     break;
                 }
                 case 15:{
-                    System.out.println("falta 15");
+                    mongoDB.listarCliente();
+                    int id = ED.leerInt("id del cliente a pagar");
+
+                    mongoDB.pagarCarrito(id);
                     break;
                 }
                 case 16:{

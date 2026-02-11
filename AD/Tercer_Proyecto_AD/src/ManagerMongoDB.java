@@ -1,9 +1,12 @@
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Projections;
 import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,8 +21,18 @@ public class ManagerMongoDB {
         try {
             mongoClient = MongoClients.create("mongodb://localhost:27017");
             mongoDatabase = mongoClient.getDatabase("Clientes");
+            MongoCollection<Document> collection = mongoDatabase.getCollection("clientes");
 
-        }catch (Exception e){
+            collection.deleteMany(new Document());
+
+            String rutaProyecto = System.getProperty("user.dir");
+            String rutaJson = rutaProyecto + "/clientes.json";
+            String json = new String(Files.readAllBytes(Paths.get(rutaJson)));
+
+            List<Document> documentos = Document.parse("{data:" + json + "}").getList("data", Document.class);
+            collection.insertMany(documentos);
+            System.out.println("BD Clientes recargada desde clientes.json");
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
@@ -189,8 +202,55 @@ public class ManagerMongoDB {
         }
     }
 
-    public void pagarCarrito(){
+    public void pagarCarrito(int clienteId) {
+        try {
+            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
+
+            Document cliente = clientes.find(Filters.eq("_id", clienteId)).first();
+            if (cliente == null) {
+                System.out.println("No se encontro cliente con id: " + clienteId);
+                return;
+            }
+
+            ArrayList<Document> carrito = (ArrayList<Document>) cliente.get("carrito");
+            if (carrito == null || carrito.isEmpty()) {
+                System.out.println("El carrito esta vacio.");
+                return;
+            }
+
+            double total = 0;
+            for (Document producto : carrito) {
+                int cantidad = producto.getInteger("cantidad");
+                double precio = producto.getDouble("precio_unitario");
+                total += cantidad * precio;
+            }
+
+            ArrayList<Document> pedidos = (ArrayList<Document>) cliente.get("pedidos");
+            int nuevoPedidoId = (pedidos == null) ? 1 : pedidos.size() + 1;
+
+            Document nuevoPedido = new Document()
+                    .append("pedido_id", nuevoPedidoId)
+                    .append("productos", carrito)
+                    .append("total", total)
+                    .append("fecha_pedido", new java.util.Date());
+
+            clientes.updateOne(
+                    Filters.eq("_id", clienteId),
+                    new Document("$push", new Document("pedidos", nuevoPedido))
+            );
+
+            clientes.updateOne(
+                    Filters.eq("_id", clienteId),
+                    new Document("$set", new Document("carrito", new ArrayList<>()))
+            );
+
+            System.out.println("Pedido realizado correctamente. Total: " + total);
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
+
 
     public void consulta1(){
         try{
@@ -264,6 +324,22 @@ public class ManagerMongoDB {
             if(borrarCliente.getDeletedCount() == 0){
                 System.out.println("No se encontro el cliente el cual eliminar");
             }else System.out.println("Se elimino el cliente con id "+id);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /*-----------------------------------------------------------------------------------*/
+
+    public void listarCliente(){
+        try{
+            MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
+
+            FindIterable<Document> resultados = clientes.find().projection(Projections.fields(Projections.include("_id","nombre")));
+
+            for(Document cliente : resultados){
+                System.out.println("ID: "+cliente.getInteger("_id")+" | Nombre: "+cliente.getString("nombre"));
+            }
         }catch (Exception e){
             System.err.println(e.getMessage());
         }
