@@ -7,7 +7,31 @@ public class ManagerBaseX {
     public ManagerBaseX() throws Exception{
         session = new ClientSession("localhost",1984,"admin","admin");
 
+        try{
         session.execute("OPEN productos");
+            System.out.println("SE CONECTO A LA BASE DE DATOS PRODUCTOS EN BASE X");
+        }catch (Exception e){
+            String rutaProyecto = System.getProperty("user.dir");
+            session.execute("CREATE DB productos " + rutaProyecto + "/productos.xml");
+            System.out.println("BaseX creó la DB productos desde productos.xml");
+        }
+    }
+
+    public String listarProductos(){
+        try{
+            String xQuery = "for $p in collection('productos')/productos/producto "+
+                            "return "+
+                            "<producto>\n"+
+                            "   <id>{$p/id}</id>\n"+
+                            "   <nombre>{$p/nombre}</nombre>\n"+
+                            "   <precio>{$p/precio}</precio>\n"+
+                            "</producto>\n";
+            String resultado = session.execute("xquery "+xQuery);
+            return resultado;
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+            return null;
+        }
     }
 
     /*----------------------------------------------------------------------------------------------------------------*/
