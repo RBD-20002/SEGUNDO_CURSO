@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class ED {
-
     static final Scanner SC = new Scanner(System.in);
 
     public static int leerInt(String elemento){
