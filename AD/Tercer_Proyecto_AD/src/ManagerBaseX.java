@@ -1,21 +1,30 @@
 import org.basex.api.client.ClientSession;
 
+import java.io.File;
+
 public class ManagerBaseX {
 
     private ClientSession session;
 
-    public ManagerBaseX() throws Exception{
-        session = new ClientSession("localhost",1984,"admin","admin");
+    public ManagerBaseX() throws Exception {
+        session = new ClientSession("localhost", 1984, "admin", "admin");
 
-        try{
+        try {
             session.execute("DROP DB productos");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-        String rutaProyecto = System.getProperty("user.dir");
-        session.execute("CREATE DB productos " + rutaProyecto + "/productos.xml");
-        System.out.println("BaseX creó la DB productos desde productos.xml");
+
+        File archivo = new File("productos.xml");
+        if (!archivo.exists()) {
+            throw new RuntimeException("productos.xml no existe en la raíz del proyecto");
+        }
+
+        session.execute("CREATE DB productos " + archivo.getAbsolutePath());
+        System.out.println("BaseX creó la BD productos desde archivo local");
     }
+
+
 
     public String listarProductos(){
         try{

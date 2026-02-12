@@ -67,6 +67,8 @@ public class Main {
                 }
                 case 9:{
                     String email = ED.leerString("email del cliente");
+
+                    mongoDB.filtrarEmail(email);
                     break;
                 }
                 case 10:{
