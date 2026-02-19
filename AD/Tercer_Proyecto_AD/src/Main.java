@@ -4,6 +4,8 @@ public class Main {
         ManagerMongoDB mongoDB = new ManagerMongoDB();
         int opcion;
 
+        Integer clienteSeleccionadoId = null;
+
         do {
             Menu.opciones();
             opcion = ED.leerInt("opcion");
@@ -67,20 +69,24 @@ public class Main {
                 }
                 case 9:{
                     String email = ED.leerString("email del cliente");
-
-                    mongoDB.filtrarEmail(email);
+                    clienteSeleccionadoId = mongoDB.filtrarEmail(email);
                     break;
                 }
                 case 10:{
-                    mongoDB.listarCliente();
-                    int id = ED.leerInt("id cliente a eliminar");
+                    if(clienteSeleccionadoId == null){
+                        System.out.println("Debe seleccionar un cliente primero (opcion 9)");
+                        break;
+                    }
 
-                    mongoDB.elimminarCliente(id);
+                    mongoDB.elimminarCliente(clienteSeleccionadoId);
+                    clienteSeleccionadoId = null;
                     break;
                 }
                 case 11:{
-                    mongoDB.listarCliente();
-                    int id = ED.leerInt("id cliente");
+                    if(clienteSeleccionadoId == null){
+                        System.out.println("Debe seleccionar un cliente primero (opcion 9)");
+                        break;
+                    }
 
                     Menu.datosModificableMongoDB();
                     int campo = ED.leerInt("campo a modificar");
@@ -88,39 +94,49 @@ public class Main {
 
                     if(campoModificable != null){
                         String nuevoValor = ED.leerString("nuevo valor");
-                        mongoDB.modificarCampo(id,campoModificable,nuevoValor);
+                        mongoDB.modificarCampo(clienteSeleccionadoId,campoModificable,nuevoValor);
                     }else{
                         System.out.println("OPERACION CANCELADA");
                     }
                     break;
                 }
                 case 12:{
-                    int clienteId = ED.leerInt("id cliente");
+                    if(clienteSeleccionadoId == null){
+                        System.out.println("Debe seleccionar un cliente primero (opcion 9)");
+                        break;
+                    }
+
                     int productoId = ED.leerInt("id producto");
                     int cantidad = ED.leerInt("cantidad");
 
-                    mongoDB.agregarProductoCarrito(clienteId,productoId,cantidad,xml);
+                    mongoDB.agregarProductoCarrito(clienteSeleccionadoId,productoId,cantidad,xml);
                     break;
                 }
                 case 13:{
-                    mongoDB.listarCliente();
-                    int clienteId = ED.leerInt("id cliente");
+                    if(clienteSeleccionadoId == null){
+                        System.out.println("Debe seleccionar un cliente primero (opcion 9)");
+                        break;
+                    }
 
-                    mongoDB.mostrarCarritoCliente(clienteId);
+                    mongoDB.mostrarCarritoCliente(clienteSeleccionadoId);
                     break;
                 }
                 case 14:{
-                    mongoDB.listarCliente();
-                    int id = ED.leerInt("id del cliente para mostrar pedidos");
+                    if(clienteSeleccionadoId == null){
+                        System.out.println("Debe seleccionar un cliente primero (opcion 9)");
+                        break;
+                    }
 
-                    mongoDB.mostrarPedidoCliente(id);
+                    mongoDB.mostrarPedidoCliente(clienteSeleccionadoId);
                     break;
                 }
                 case 15:{
-                    mongoDB.listarCliente();
-                    int id = ED.leerInt("id del cliente a pagar");
+                    if(clienteSeleccionadoId == null){
+                        System.out.println("Debe seleccionar un cliente primero (opcion 9)");
+                        break;
+                    }
 
-                    mongoDB.pagarCarrito(id);
+                    mongoDB.pagarCarrito(clienteSeleccionadoId);
                     break;
                 }
                 case 16:{
@@ -141,6 +157,5 @@ public class Main {
                 }
             }
         }while (opcion != 18);
-
     }
 }

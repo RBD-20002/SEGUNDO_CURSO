@@ -9,5 +9,23 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="basex-12.0" level="project" />
     <orderEntry type="library" name="mongo-java-driver" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Driver/BaseX-conector-j/basex-10.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Driver/mongoDB-conector-j/mongo-java-driver-3.12.14.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

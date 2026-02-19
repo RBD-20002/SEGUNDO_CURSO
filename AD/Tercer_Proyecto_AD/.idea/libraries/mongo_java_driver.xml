@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="mongo-java-driver">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../../../Drivers/mongoDB-conector-j/mongo-java-driver.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../../Driver/MongoDB-connector-jr/mongo-java-driver.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

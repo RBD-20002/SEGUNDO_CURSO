@@ -59,19 +59,23 @@ public class ManagerMongoDB {
         }
     }
 
-    public void filtrarEmail(String email){
+    public Integer filtrarEmail(String email){
         try{
             MongoCollection<Document> clientes = mongoDatabase.getCollection("clientes");
             Document clienteBuscasdo = clientes.find(Filters.eq("email",email)).first();
 
             if(clienteBuscasdo == null){
                 System.out.println("No se encontro al cliente, asi que no se pudo conseguir la ID");
-                return;
+                return null;
             }
-            ObjectId id = clienteBuscasdo.getObjectId("_id");
+
+            Integer id = clienteBuscasdo.getInteger("_id");
             System.out.println("Cliente encontrado: "+clienteBuscasdo.getString("nombre")+" | ID: "+id);
+            return id;
+
         }catch (Exception e){
             System.err.println(e.getMessage());
+            return null;
         }
     }
 

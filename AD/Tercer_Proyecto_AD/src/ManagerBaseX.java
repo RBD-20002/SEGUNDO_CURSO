@@ -1,5 +1,4 @@
 import org.basex.api.client.ClientSession;
-
 import java.io.File;
 
 public class ManagerBaseX {
@@ -7,7 +6,7 @@ public class ManagerBaseX {
     private ClientSession session;
 
     public ManagerBaseX() throws Exception {
-        session = new ClientSession("localhost", 1984, "admin", "admin");
+        session = new ClientSession("localhost", 1984, "admin", "12345");
 
         try {
             session.execute("DROP DB productos");

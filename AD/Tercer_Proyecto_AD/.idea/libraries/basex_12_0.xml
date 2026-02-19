@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="basex-12.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../../../../../Drivers/BaseX-conector-j/basex-12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../../../../../Driver/BaseX-connector-jr/basex-12.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
