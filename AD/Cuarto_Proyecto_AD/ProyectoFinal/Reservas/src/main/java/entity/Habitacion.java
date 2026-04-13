@@ -15,9 +15,8 @@ public class Habitacion {
     @Column(name = "habitacion_id")
     private Integer habitacionId;
 
-
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "hotel_id", columnDefinition = "INTEGER")
     private Hotel hotelId;
 
     @Column(name = "numero_habitacion")
@@ -30,5 +29,5 @@ public class Habitacion {
     private Double precio;
 
     @Column(name = "disponible")
-    private Double disponible;
+    private boolean disponible;
 }

@@ -11,5 +11,5 @@ public class ActualizarHabitacionDTO {
     private String tipo;
     private double precio;
     private int idHotel;
-    private boolean disponible;
+    private Boolean disponible;
 }
