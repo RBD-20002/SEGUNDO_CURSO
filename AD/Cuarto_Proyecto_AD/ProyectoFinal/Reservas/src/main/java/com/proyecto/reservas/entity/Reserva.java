@@ -21,7 +21,7 @@ public class Reserva {
 
     @ManyToOne
     @JoinColumn(name = "habitacion_id")
-    private Habitacion habitacionId;
+    private Habitacion habitacion;
 
     @Column(name = "fecha_inicio")
     private LocalDate fechaInicio;

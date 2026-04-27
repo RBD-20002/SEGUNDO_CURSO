@@ -15,18 +15,17 @@ public class GatewayApplication {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                // 1. Ruta para Usuarios (MySQL + REST)
-                .route("usuarios-service", r -> r.path("/api/usuarios/**")
-                        .uri("lb://usuarios-service"))
+                // 1. Ruta para Usuarios (Raíz /usuarios)
+                .route("usuarios-service", r -> r.path("/usuarios/**")
+                        .uri("lb://usuarios")) // Asegúrate de que el micro de usuarios se llame "usuarios" en su properties
 
-                // 2. Ruta para Reservas (MySQL + REST)
-                .route("reservas-service", r -> r.path("/api/reservas/**")
-                        .uri("lb://reservas-service"))
+                // 2. Ruta para Reservas (Raíz /reservas)
+                .route("reservas-service", r -> r.path("/reservas/**")
+                        .uri("lb://reservas"))
 
-                // 3. Ruta para Comentarios (MongoDB + GraphQL)
-                .route("comentarios-service", r -> r.path("/graphql/**")
-                        .uri("lb://comentarios-service"))
-
+                // 3. Ruta para Comentarios (Endpoint /comentarios para GraphQL/GraphIQL)
+                .route("comentarios-service", r -> r.path("/comentarios/**")
+                        .uri("lb://comentarios"))
                 .build();
     }
 }

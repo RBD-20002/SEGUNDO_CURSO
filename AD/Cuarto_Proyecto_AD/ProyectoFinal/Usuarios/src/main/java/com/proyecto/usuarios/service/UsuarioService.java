@@ -61,7 +61,7 @@ public class UsuarioService {
     public String obtenerInfoUsuarioPorId(Integer id){
         Optional<Usuario> user = usuarioRepository.findById(id);
         if(user.isPresent()){
-            return user.get().getNombre()+" OBTENER INFORMACION POR ID FUE UN EXITO DESDE SERVICE";
+            return user.get().getNombre();
         }
         return "OBTENER INFORMACION POR ID SUFRIO UN FALLO DESDE SERVICE";
     }
@@ -69,7 +69,7 @@ public class UsuarioService {
     public String obtenerInfoUsuarioPorNombre(String nombre){
         Optional<Usuario> user = usuarioRepository.findByNombre(nombre);
         if(user.isPresent()){
-            return "ID DEL USUARIO: "+ user.get().getUsuarioId();
+            return  String.valueOf(user.get().getUsuarioId());
         }
         return "OBTENER INFORMACION POR NOMBRE SUFRIO UN FALLO DESDE SERVICE";
     }

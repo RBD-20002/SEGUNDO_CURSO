@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import com.proyecto.usuarios.service.UsuarioService;
 
 @RestController
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired

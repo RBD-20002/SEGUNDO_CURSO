@@ -17,7 +17,7 @@ public class Habitacion {
 
     @ManyToOne
     @JoinColumn(name = "hotel_id", columnDefinition = "INTEGER")
-    private Hotel hotelId;
+    private Hotel hotel;
 
     @Column(name = "numero_habitacion")
     private Integer numeroHabitacion;
