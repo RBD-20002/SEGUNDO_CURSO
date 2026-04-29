@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name="Reservas", url="http://localhost:8500/eureka")
+@FeignClient(name="reservas")
 public interface ReservaFeignClient {
 
     @PostMapping("/usuarios/validar")

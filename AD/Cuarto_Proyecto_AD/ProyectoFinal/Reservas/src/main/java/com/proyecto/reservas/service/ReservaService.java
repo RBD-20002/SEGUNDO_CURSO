@@ -1,5 +1,6 @@
 package com.proyecto.reservas.service;
 
+import com.proyecto.reservas.dto.CambiarEstadoReservaDTO;
 import com.proyecto.reservas.dto.CrearReservaDTO;
 import com.proyecto.reservas.dto.ReservaInfoDTO;
 import com.proyecto.reservas.dto.UsuarioDTO;
@@ -27,76 +28,105 @@ public class ReservaService {
     @Autowired
     private UsuarioFeignClient usuarioFeignClient;
 
-     public String crearReserva(CrearReservaDTO reservaDTO, UsuarioDTO usuarioDTO){
-         if(!usuarioFeignClient.validarUsuario(usuarioDTO)){
-             return "USUARIO NO AUTORIZADO";
-         }
-         try{
-             Optional<Habitacion> filtro = habitacionRepository.findById(reservaDTO.getHabitacionId());
-             if(filtro.isPresent()){
-                 Habitacion habitacion = filtro.get();
-                 if(!habitacion.isDisponible()){
-                     return "LA HABITACION YA ESTA RESERVADA";
-                 }
+    public String crearReserva(CrearReservaDTO reservaDTO, UsuarioDTO usuarioDTO) {
+        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
+            return "USUARIO NO AUTORIZADO";
+        }
+        try {
+            Optional<Habitacion> filtro = habitacionRepository.findById(reservaDTO.getHabitacionId());
+            if (filtro.isPresent()) {
+                Habitacion habitacion = filtro.get();
+                if (!habitacion.isDisponible()) {
+                    return "LA HABITACION YA ESTA RESERVADA";
+                }
 
-                 String idUsuario = usuarioFeignClient.obtenerIdPorNombre(usuarioDTO.getNombre());
-                 Integer idParceado = Integer.parseInt(idUsuario);
+                String idUsuario = usuarioFeignClient.obtenerIdPorNombre(usuarioDTO.getNombre());
+                Integer idParceado = Integer.parseInt(idUsuario);
 
-                 Reserva reserva = new Reserva();
-                 reserva.setUsuarioId(idParceado);
-                 reserva.setHabitacion(habitacion);
-                 reserva.setFechaInicio(reservaDTO.getFechaInicio());
-                 reserva.setFechaFin(reservaDTO.getFechaFin());
-                 reserva.setEstado("CONFIRMADA");
+                Reserva reserva = new Reserva();
+                reserva.setUsuarioId(idParceado);
+                reserva.setHabitacion(habitacion);
+                reserva.setFechaInicio(reservaDTO.getFechaInicio());
+                reserva.setFechaFin(reservaDTO.getFechaFin());
+                reserva.setEstado("CONFIRMADA");
 
-                 habitacion.setDisponible(false);
-                 habitacionRepository.save(habitacion);
+                habitacion.setDisponible(false);
+                habitacionRepository.save(habitacion);
 
-                 reservaRepository.save(reserva);
-                 return "RESEVA REALIZADA CON EXITO";
-             }
-             return "HABITACION NO ENCONTRADA";
-         }catch (Exception e){
-             return "CREAR RESERVA FALLO DESDE SERVICE";
-         }
-     }
+                reservaRepository.save(reserva);
+                return "RESEVA REALIZADA CON EXITO";
+            }
+            return "HABITACION NO ENCONTRADA";
+        } catch (Exception e) {
+            return "CREAR RESERVA FALLO DESDE SERVICE";
+        }
+    }
 
-     public List<ReservaInfoDTO> listarReservasUsuario(UsuarioDTO usuarioDTO){
-         if(!usuarioFeignClient.validarUsuario(usuarioDTO)){
-             return null;
-         }
+    public String cambiarEstado(CambiarEstadoReservaDTO estadoDTO, UsuarioDTO usuarioDTO) {
+        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
+            return "USUARIO NO AUTORIZADO";
+        }
+        Optional<Reserva> filtro = reservaRepository.findById(estadoDTO.getReservaId());
+        if (filtro.isPresent()) {
+            Reserva reserva = filtro.get();
+            reserva.setEstado(estadoDTO.getEstado());
 
-         String idUsuario = usuarioFeignClient.obtenerIdPorNombre(usuarioDTO.getNombre());
-         Integer idParceado = Integer.parseInt(idUsuario);
+            reservaRepository.save(reserva);
+            return "CAMBIAR ESTADO FUE UN EXITO";
+        }
+        return "CAMBIAR ESTADO SUFRIO UN FALLO DESDE SERVICE";
+    }
 
-         List<Reserva> reserva = reservaRepository.findByUsuarioId(idParceado);
-         List<ReservaInfoDTO> listaFinal = new ArrayList<>();
+    public List<ReservaInfoDTO> listarReservasUsuario(UsuarioDTO usuarioDTO) {
+        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
+            return null;
+        }
 
-         for(Reserva r : reserva){
-             ReservaInfoDTO info = new ReservaInfoDTO();
-             info.setFechaInicio(r.getFechaInicio());
-             info.setFechaFin(r.getFechaFin());
-             info.setHabitacionId(r.getHabitacion().getHabitacionId());
+        String idUsuario = usuarioFeignClient.obtenerIdPorNombre(usuarioDTO.getNombre());
+        Integer idParceado = Integer.parseInt(idUsuario);
 
-             listaFinal.add(info);
-         }
-         return listaFinal;
-     }
+        List<Reserva> reservas = reservaRepository.findByUsuarioId(idParceado);
+        return convertirAListaDTO(reservas);
+    }
 
-     public String eliminarReserva(int idReserva, UsuarioDTO usuarioDTO) {
-         if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
-             return "USUARIO NO AUTORIZADO";
-         }
-         Optional<Reserva> filtro = reservaRepository.findById(idReserva);
-         if (filtro.isPresent()) {
-             Reserva reserva = filtro.get();
-             Habitacion habitacion = reserva.getHabitacion();
-             habitacion.setDisponible(true);
-             habitacionRepository.save(habitacion);
+    public List<ReservaInfoDTO> listarReservasSegunEstado(String estado, UsuarioDTO usuarioDTO) {
+        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
+            return null;
+        }
+        List<Reserva> reservas = reservaRepository.findByEstado(estado);
+        return convertirAListaDTO(reservas);
+    }
 
-             reservaRepository.delete(reserva);
-             return "RESERVA ELIMINADA Y LA HABITACION ESTA DISPONIBLE";
-         }
-         return "RESERVA NO ENCONTRADA";
-     }
+    public String eliminarReserva(int idReserva, UsuarioDTO usuarioDTO) {
+        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
+            return "USUARIO NO AUTORIZADO";
+        }
+        Optional<Reserva> filtro = reservaRepository.findById(idReserva);
+        if (filtro.isPresent()) {
+            Reserva reserva = filtro.get();
+            Habitacion habitacion = reserva.getHabitacion();
+            habitacion.setDisponible(true);
+            habitacionRepository.save(habitacion);
+
+            reservaRepository.delete(reserva);
+            return "RESERVA ELIMINADA Y LA HABITACION ESTA DISPONIBLE";
+        }
+        return "RESERVA NO ENCONTRADA";
+    }
+
+    private List<ReservaInfoDTO> convertirAListaDTO(List<Reserva> reservas) {
+        List<ReservaInfoDTO> listaFinal = new ArrayList<>();
+        for (Reserva r : reservas) {
+            ReservaInfoDTO info = new ReservaInfoDTO();
+            info.setFechaInicio(r.getFechaInicio());
+            info.setFechaFin(r.getFechaFin());
+            info.setHabitacionId(r.getHabitacion().getHabitacionId());
+            listaFinal.add(info);
+        }
+        return listaFinal;
+    }
+
+    public boolean checkReserva(int idUsuario, int idHotel, int idReserva) {
+        return reservaRepository.checkReserva(idUsuario, idHotel, idReserva);
+    }
 }

@@ -1,0 +1,45 @@
+package com.proyecto.reservas.controller;
+
+import com.proyecto.reservas.dto.CambiarEstadoReservaDTO;
+import com.proyecto.reservas.dto.CrearReservaDTO;
+import com.proyecto.reservas.dto.ReservaInfoDTO;
+import com.proyecto.reservas.dto.UsuarioDTO;
+import com.proyecto.reservas.service.ReservaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/reservas")
+public class ReservaController {
+
+    @Autowired
+    private ReservaService reservaService;
+
+    @PostMapping("/")
+    public String crearReserva(@RequestBody CrearReservaDTO dto, @RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre, contrasena);
+        return reservaService.crearReserva(dto,usuario);
+    }
+
+    @PatchMapping("/")
+    public String cambiarEstado(@RequestBody CambiarEstadoReservaDTO dto, @RequestBody UsuarioDTO usuario){
+        return reservaService.cambiarEstado(dto,usuario);
+    }
+
+    @GetMapping("/")
+    public List<ReservaInfoDTO> listarReservasUsuario(UsuarioDTO usuarioDTO){
+        return reservaService.listarReservasUsuario(usuarioDTO);
+    }
+
+    @GetMapping("/{estado}")
+    public List<ReservaInfoDTO> listarReservasSegunEstado(@PathVariable String estado, @RequestBody UsuarioDTO usuario){
+        return reservaService.listarReservasSegunEstado(estado,usuario);
+    }
+
+    @GetMapping("/check")
+    public boolean checkReserva(@RequestParam int idUsuario, @RequestParam int idHotel, @RequestParam int idReserva) {
+        return reservaService.checkReserva(idUsuario, idHotel, idReserva);
+    }
+}

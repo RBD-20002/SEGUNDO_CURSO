@@ -65,7 +65,10 @@ public class HotelService {
         return "ELIMINAR HOTEL FALLO EN SERVICE";
     }
 
-    public String obtenerIdApartirNombre(String nombre){
+    public String obtenerIdApartirNombre(String nombre, UsuarioDTO usuarioDTO){
+        if(!usuarioFeignClient.validarUsuario(usuarioDTO)){
+            return "USUARIO NO AUTORIZADO";
+        }
         Optional<Hotel> filtrado = hotelRepository.findByNombre(nombre);
         if(filtrado.isPresent()){
             Hotel hotel = filtrado.get();
@@ -74,7 +77,10 @@ public class HotelService {
         return "OBTENER ID A TRAVEZ DEL NOMBRE FALLO DESDE SERVICE";
     }
 
-    public String obtenerNombreAPartirId(int id){
+    public String obtenerNombreAPartirId(int id, UsuarioDTO usuarioDTO){
+        if(!usuarioFeignClient.validarUsuario(usuarioDTO)){
+            return "USUARIO NO AUTORIZADO";
+        }
         Optional<Hotel> filtrado = hotelRepository.findById(id);
         if(filtrado.isPresent()){
             Hotel hotel = filtrado.get();
