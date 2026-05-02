@@ -1,17 +1,17 @@
 package com.proyecto.comentarios.fiegnClients;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name="reservas")
 public interface ReservaFeignClient {
 
-    @PostMapping("/usuarios/validar")
-    boolean validarUsuario(@RequestParam("nombre") String nombre, @RequestParam("contrasena") String contrasena);
+    @PostMapping("/reservas/hotel/id/{nombre}")
+    String obtenerIdHotelPorNombre(@PathVariable String nombre, @RequestBody Object usuarioDTO);
 
-    @GetMapping("/usuarios/info/nombre/{nombre}")
-    String obtenerInfoUsuarioPorNombre(@PathVariable("nombre") String nombre);
+    @GetMapping("/reservas/check")
+    boolean checkReserva(@RequestParam int idUsuario, @RequestParam int idHotel, @RequestParam int idReserva);
+
+    @PostMapping("/reservas/hotel/nombre/{id}")
+    String obtenerNombreHotelPorId(@PathVariable Integer id, @RequestBody Object usuarioDTO);
 }

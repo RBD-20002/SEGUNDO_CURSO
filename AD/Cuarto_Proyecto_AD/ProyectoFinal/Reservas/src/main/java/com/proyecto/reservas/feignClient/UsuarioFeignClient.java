@@ -13,6 +13,6 @@ public interface UsuarioFeignClient {
     @PostMapping("/usuarios/validar")
     boolean validarUsuario(@RequestBody UsuarioDTO usuario);
 
-    @GetMapping("usuarios/info/nombre/{nombre}")
+    @GetMapping("/usuarios/info/nombre/{nombre}")
     String obtenerIdPorNombre(@PathVariable("nombre") String nombre);
 }

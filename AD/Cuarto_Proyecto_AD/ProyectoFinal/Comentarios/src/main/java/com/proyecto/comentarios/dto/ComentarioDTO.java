@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ComentarioDTO {
     private String nombreHotel;
-    private Integer reservaId;
+    private Integer reserva_id;
     private Double puntuacion;
     private String comentario;
 }

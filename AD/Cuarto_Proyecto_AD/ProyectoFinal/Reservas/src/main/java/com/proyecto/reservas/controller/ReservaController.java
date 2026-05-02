@@ -17,24 +17,27 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    @PostMapping("/")
+    @PostMapping
     public String crearReserva(@RequestBody CrearReservaDTO dto, @RequestParam String nombre, @RequestParam String contrasena){
         UsuarioDTO usuario = new UsuarioDTO(nombre, contrasena);
         return reservaService.crearReserva(dto,usuario);
     }
 
-    @PatchMapping("/")
-    public String cambiarEstado(@RequestBody CambiarEstadoReservaDTO dto, @RequestBody UsuarioDTO usuario){
+    @PatchMapping
+    public String cambiarEstado(@RequestBody CambiarEstadoReservaDTO dto, @RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre, contrasena);
         return reservaService.cambiarEstado(dto,usuario);
     }
 
-    @GetMapping("/")
-    public List<ReservaInfoDTO> listarReservasUsuario(UsuarioDTO usuarioDTO){
-        return reservaService.listarReservasUsuario(usuarioDTO);
+    @GetMapping
+    public List<ReservaInfoDTO> listarReservasUsuario(@RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre, contrasena);
+        return reservaService.listarReservasUsuario(usuario);
     }
 
     @GetMapping("/{estado}")
-    public List<ReservaInfoDTO> listarReservasSegunEstado(@PathVariable String estado, @RequestBody UsuarioDTO usuario){
+    public List<ReservaInfoDTO> listarReservasSegunEstado(@PathVariable String estado, @RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre, contrasena);
         return reservaService.listarReservasSegunEstado(estado,usuario);
     }
 

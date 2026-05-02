@@ -71,6 +71,12 @@ public class ReservaService {
             Reserva reserva = filtro.get();
             reserva.setEstado(estadoDTO.getEstado());
 
+            Habitacion habitacion = reserva.getHabitacion();
+            if (habitacion != null && (estadoDTO.getEstado().equalsIgnoreCase("CANCELADA") || estadoDTO.getEstado().equalsIgnoreCase("PAGADA"))) {
+                habitacion.setDisponible(true);
+                habitacionRepository.save(habitacion);
+            }
+
             reservaRepository.save(reserva);
             return "CAMBIAR ESTADO FUE UN EXITO";
         }
@@ -95,23 +101,6 @@ public class ReservaService {
         }
         List<Reserva> reservas = reservaRepository.findByEstado(estado);
         return convertirAListaDTO(reservas);
-    }
-
-    public String eliminarReserva(int idReserva, UsuarioDTO usuarioDTO) {
-        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
-            return "USUARIO NO AUTORIZADO";
-        }
-        Optional<Reserva> filtro = reservaRepository.findById(idReserva);
-        if (filtro.isPresent()) {
-            Reserva reserva = filtro.get();
-            Habitacion habitacion = reserva.getHabitacion();
-            habitacion.setDisponible(true);
-            habitacionRepository.save(habitacion);
-
-            reservaRepository.delete(reserva);
-            return "RESERVA ELIMINADA Y LA HABITACION ESTA DISPONIBLE";
-        }
-        return "RESERVA NO ENCONTRADA";
     }
 
     private List<ReservaInfoDTO> convertirAListaDTO(List<Reserva> reservas) {

@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ActualizarHotelDTO {
-    private int id;
+    private Integer hotelId;
     private String nombre;
     private String direccion;
 }

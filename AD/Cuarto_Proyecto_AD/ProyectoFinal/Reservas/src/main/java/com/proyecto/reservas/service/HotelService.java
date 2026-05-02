@@ -41,10 +41,9 @@ public class HotelService {
         if(!usuarioFeignClient.validarUsuario(usuarioDTO)){
             return "USUARIO NO AUTORIZADO";
         }
-        Optional<Hotel> filtrado = hotelRepository.findById(dto.getId());
+        Optional<Hotel> filtrado = hotelRepository.findById(dto.getHotelId());
         if (filtrado.isPresent()) {
             Hotel hotel = filtrado.get();
-            hotel.setHotelId(dto.getId());
             hotel.setNombre(dto.getNombre());
             hotel.setDireccion(dto.getDireccion());
 

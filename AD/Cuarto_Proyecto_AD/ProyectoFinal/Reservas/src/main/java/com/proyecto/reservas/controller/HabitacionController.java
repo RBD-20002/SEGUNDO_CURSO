@@ -8,24 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/reservas")
+@RequestMapping("/reservas/habitacion")
 public class HabitacionController {
 
     @Autowired
     private HabitacionService habitacionService;
 
-    @PostMapping("/")
-    public String crearHabitacion(@RequestBody CrearHabitacionDTO dto, @RequestBody UsuarioDTO usuario){
+    @PostMapping
+    public String crearHabitacion(@RequestBody CrearHabitacionDTO dto, @RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre,contrasena);
         return habitacionService.crearHabitacion(dto,usuario);
     }
 
-    @PatchMapping("/")
-    public String actualizarHabitacion(@RequestBody ActualizarHabitacionDTO dto, @RequestBody UsuarioDTO usuario){
+    @PatchMapping
+    public String actualizarHabitacion(@RequestBody ActualizarHabitacionDTO dto, @RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre,contrasena);
         return habitacionService.actualizarHabitacion(dto, usuario);
     }
 
     @DeleteMapping("/{id}")
-    public String eliminarHabitacion(@PathVariable Integer id, @RequestBody UsuarioDTO usuario){
+    public String eliminarHabitacion(@PathVariable Integer id, @RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre,contrasena);
         return habitacionService.eliminarHabitacion(id, usuario);
     }
 }
