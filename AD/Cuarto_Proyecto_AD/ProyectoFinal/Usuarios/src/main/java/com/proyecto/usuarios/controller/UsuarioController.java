@@ -24,7 +24,7 @@ public class UsuarioController {
         return usuarioService.actualizarUsuario(usuario);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     public String eliminarUsuario(@RequestBody EliminarAndValidarDTO usuario){
         return usuarioService.eliminarUsuario(usuario.getNombre(), usuario.getContrasena());
     }

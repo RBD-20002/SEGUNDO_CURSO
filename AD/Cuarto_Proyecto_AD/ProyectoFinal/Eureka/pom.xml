@@ -12,7 +12,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>Eureka</artifactId>
+    <artifactId>eureka</artifactId>
     <name>Eureka Server</name>
 
     <dependencies>

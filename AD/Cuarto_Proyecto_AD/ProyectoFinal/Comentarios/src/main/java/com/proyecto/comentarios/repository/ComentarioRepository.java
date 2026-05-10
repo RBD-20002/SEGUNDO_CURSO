@@ -5,19 +5,15 @@ import com.proyecto.comentarios.dto.UsuarioDTO;
 import com.proyecto.comentarios.entity.Comentarios;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
 public interface ComentarioRepository extends MongoRepository<Comentarios, String> {
+    List<Comentarios> findByHotelId(Integer hotelId);
 
-    List<ComentarioDTO> listarComentariosHotel(String nombreHotel);
+    List<Comentarios> findByUsuarioId(Integer usuarioId);
 
-    List<ComentarioDTO> listarComentariosUsuario(UsuarioDTO usuario);
+    List<Comentarios> findByUsuarioIdAndReservaId(Integer usuarioId, Integer reservaId);
 
-    List<ComentarioDTO> mostrarComentarioUsuarioReserva(Integer id);
-
-    Double puntuacionMediaHotel(String nombre);
-
-    Double puntuacionesMediasUsuario(UsuarioDTO usuario);
+    boolean existsByUsuarioIdAndHotelIdAndReservaId(Integer usuarioId, Integer hotelId, Integer reservaId);
 }

@@ -4,12 +4,16 @@ import com.proyecto.reservas.dto.ActualizarHabitacionDTO;
 import com.proyecto.reservas.dto.ActualizarHotelDTO;
 import com.proyecto.reservas.dto.CrearHotelDTO;
 import com.proyecto.reservas.dto.UsuarioDTO;
+import com.proyecto.reservas.entity.Habitacion;
 import com.proyecto.reservas.entity.Hotel;
 import com.proyecto.reservas.feignClient.UsuarioFeignClient;
+import com.proyecto.reservas.repository.HabitacionRepository;
+import com.proyecto.reservas.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.proyecto.reservas.repository.HotelRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,6 +21,12 @@ public class HotelService {
 
     @Autowired
     private HotelRepository hotelRepository;
+
+    @Autowired
+    private HabitacionRepository habitacionRepository;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
 
     @Autowired
     private UsuarioFeignClient usuarioFeignClient;
@@ -57,10 +67,28 @@ public class HotelService {
         if(!usuarioFeignClient.validarUsuario(usuarioDTO)){
             return "USUARIO NO AUTORIZADO";
         }
-        if(hotelRepository.existsById(id)){
-            hotelRepository.deleteById(id);
+
+        Optional<Hotel> hotel = hotelRepository.findById(id);
+
+        if(hotel.isPresent()){
+
+            List<Habitacion> habitaciones =
+                    habitacionRepository.findByHotel_HotelId(id);
+
+            for(Habitacion habitacion : habitaciones){
+
+                reservaRepository.deleteByHabitacion_HabitacionId(
+                        habitacion.getHabitacionId()
+                );
+
+                habitacionRepository.delete(habitacion);
+            }
+
+            hotelRepository.delete(hotel.get());
+
             return "ELIMINAR HOTEL FUE UN EXITO EN SERVICE";
         }
+
         return "ELIMINAR HOTEL FALLO EN SERVICE";
     }
 

@@ -5,10 +5,9 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.time.LocalDateTime;
 
-@Document(collation = "comentarios")
+@Document(collection = "comentarios")
 @Getter
 @Setter
 public class Comentarios {
