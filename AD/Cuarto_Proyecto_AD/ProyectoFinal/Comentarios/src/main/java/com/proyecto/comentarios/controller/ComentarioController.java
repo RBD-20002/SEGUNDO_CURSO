@@ -1,72 +1,59 @@
 package com.proyecto.comentarios.controller;
 
-import com.proyecto.comentarios.dto.ComentarioDTO;
-import com.proyecto.comentarios.dto.UsuarioDTO;
-import com.proyecto.comentarios.service.ComentarioService;
+import com.proyecto.comentarios.dto.CrearComentarioDTO;
+import com.proyecto.comentarios.entity.Comentarios;
+import com.proyecto.comentarios.service.ComentariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+
 import java.util.List;
 
 @Controller
 public class ComentarioController {
 
     @Autowired
-    private ComentarioService comentarioService;
+    private ComentariosService comentariosService;
 
     @MutationMapping
-    public ComentarioDTO crearComentario(@Argument String nombre, @Argument String contrasena, @Argument String nombreHotel, @Argument Integer reserva_id, @Argument Double puntuacion, @Argument String comentario){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nombre,contrasena);
-        ComentarioDTO comentarioDTO = new ComentarioDTO(nombreHotel, reserva_id, puntuacion, comentario);
-
-        return comentarioService.crearComentario(comentarioDTO,usuarioDTO);
+    public CrearComentarioDTO crearComentario(@Argument CrearComentarioDTO input) {
+        return comentariosService.crearComentario(input);
     }
 
     @MutationMapping
-    public String eliminarComentarios(){
-        comentarioService.eliminarComentarios();
-        return "TODOOS LOS COMENTARIOS ELIMINADOS";
+    public String eliminarTodos() {
+        return comentariosService.eliminarTodos();
     }
 
     @MutationMapping
-    public String eliminarComentarioDeUsuario(@Argument String comentarioId){
-        return comentarioService.eliminarComentarioDeUsuario(comentarioId);
+    public String eliminarComentario(@Argument String id) {
+        return comentariosService.eliminarComentario(id);
     }
 
     @QueryMapping
-    public List<ComentarioDTO> listarComentariosHotel(@Argument String nombreHotel, @Argument String nombre, @Argument String contrasena){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nombre,contrasena);
-
-        return comentarioService.listarComentariosHotel(nombreHotel,usuarioDTO);
+    public List<Comentarios> listarComentariosHotel(@Argument Integer hotelId) {
+        return comentariosService.listarComentariosHotel(hotelId);
     }
 
     @QueryMapping
-    public List<ComentarioDTO> listarComentariosUsuario(@Argument String nombre, @Argument String contrasena){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nombre,contrasena);
-
-        return comentarioService.listarComentariosUsuario(usuarioDTO);
+    public List<Comentarios> listarComentariosUsuario(@Argument Integer usuarioId) {
+        return comentariosService.listarComentariosUsuario(usuarioId);
     }
 
     @QueryMapping
-    public List<ComentarioDTO> mostrarComentarioUsuarioReserva(@Argument Integer reservaId, @Argument String nombre, @Argument String contrasena){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nombre,contrasena);
-
-        return comentarioService.mostrarComentarioUsuarioReserva(reservaId, usuarioDTO);
+    public List<Comentarios> mostrarComentarioUsuarioReserva(@Argument Integer reservaId) {
+        return comentariosService.mostrarComentarioUsuarioReserva(reservaId);
     }
 
     @QueryMapping
-    public Double puntuacionMediaHotel(@Argument String nombreHotel, @Argument String nombre, @Argument String contrasena){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nombre,contrasena);
-
-        return comentarioService.puntuacionMediaHotel(nombreHotel,usuarioDTO);
+    public Double puntuacionMediaHotel(@Argument Integer hotelId) {
+        return comentariosService.puntuacionMediaHotel(hotelId);
     }
 
     @QueryMapping
-    public Double puntuacionesMediasUsuario(@Argument String nombre, @Argument String contrasena){
-        UsuarioDTO usuarioDTO = new UsuarioDTO(nombre,contrasena);
-
-        return comentarioService.puntuacionesMediasUsuario(usuarioDTO);
+    public Double puntuacionMediaUsuario(@Argument Integer usuarioId) {
+        return comentariosService.puntuacionMediaUsuario(usuarioId);
     }
 }

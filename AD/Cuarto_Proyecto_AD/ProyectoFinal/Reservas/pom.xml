@@ -12,7 +12,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>Reservas</artifactId>
+    <artifactId>reservas</artifactId>
     <name>Microservicio Reservas</name>
 
     <dependencies>

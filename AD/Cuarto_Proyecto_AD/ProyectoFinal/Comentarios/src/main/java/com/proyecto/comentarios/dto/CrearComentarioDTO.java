@@ -9,9 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ComentarioDTO {
+public class CrearComentarioDTO {
     private String nombreHotel;
-    private Integer reserva_id;
+    private String nombreUsuario;
+    private String contrasena;
+    private Integer reservaId;
     private Double puntuacion;
     private String comentario;
 }

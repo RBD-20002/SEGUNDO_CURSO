@@ -45,4 +45,16 @@ public class ReservaController {
     public boolean checkReserva(@RequestParam int idUsuario, @RequestParam int idHotel, @RequestParam int idReserva) {
         return reservaService.checkReserva(idUsuario, idHotel, idReserva);
     }
+
+    @GetMapping("/hotel/id/{nombre}")
+    public String obtenerIdHotelPorNombre(@PathVariable String nombre, @RequestParam String nombreUser, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombreUser, contrasena);
+        return reservaService.obtenerIdHotelPorNombre(nombre,usuario);
+    }
+
+    @GetMapping("/hotel/nombre/{id}")
+    public String obtenerNombreHotelPorId(@PathVariable Integer id, @RequestParam String nombre, @RequestParam String contrasena){
+        UsuarioDTO usuario = new UsuarioDTO(nombre, contrasena);
+        return reservaService.obtenerNombreHotelPorId(id,usuario);
+    }
 }

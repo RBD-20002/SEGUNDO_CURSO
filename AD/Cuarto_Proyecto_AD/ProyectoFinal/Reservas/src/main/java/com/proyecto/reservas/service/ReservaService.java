@@ -5,9 +5,11 @@ import com.proyecto.reservas.dto.CrearReservaDTO;
 import com.proyecto.reservas.dto.ReservaInfoDTO;
 import com.proyecto.reservas.dto.UsuarioDTO;
 import com.proyecto.reservas.entity.Habitacion;
+import com.proyecto.reservas.entity.Hotel;
 import com.proyecto.reservas.entity.Reserva;
 import com.proyecto.reservas.feignClient.UsuarioFeignClient;
 import com.proyecto.reservas.repository.HabitacionRepository;
+import com.proyecto.reservas.repository.HotelRepository;
 import com.proyecto.reservas.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ public class ReservaService {
 
     @Autowired
     private HabitacionRepository habitacionRepository;
+
+    @Autowired
+    private HotelRepository hotelRepository;
 
     @Autowired
     private UsuarioFeignClient usuarioFeignClient;
@@ -117,5 +122,29 @@ public class ReservaService {
 
     public boolean checkReserva(int idUsuario, int idHotel, int idReserva) {
         return reservaRepository.checkReserva(idUsuario, idHotel, idReserva);
+    }
+
+    public String obtenerIdHotelPorNombre(String nombre, UsuarioDTO usuarioDTO){
+        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
+            throw new RuntimeException("USUARIO NO AUTORIZADO");
+        }
+        Optional<Hotel> hotel = hotelRepository.findByNombre(nombre);
+
+        if(!hotel.isPresent()){
+            throw new RuntimeException("HOTEL NO EXISTE: " + nombre);
+        }
+        return String.valueOf(hotel.get().getHotelId());
+    }
+
+    public String obtenerNombreHotelPorId(Integer id, UsuarioDTO usuarioDTO){
+        if (!usuarioFeignClient.validarUsuario(usuarioDTO)) {
+            throw new RuntimeException("USUARIO NO AUTORIZADO");
+        }
+        Optional<Hotel> hotel = hotelRepository.findById(id);
+
+        if(!hotel.isPresent()){
+            throw new RuntimeException("HOTEL NO EXISTE ID: " + id);
+        }
+        return hotel.get().getNombre();
     }
 }

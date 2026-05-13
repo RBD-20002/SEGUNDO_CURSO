@@ -1,29 +1,32 @@
-# DTO's
-type ComentarioDTO{
+type Comentarios {
+    id: ID
+    usuarioId: Int
+    hotelId: Int
+    reservaId: Int
+    puntuacion: Float
+    comentario: String
+    fechaCreacion: String
+}
+
+input ComentarioInput {
     nombreHotel: String
-    reserva_id: Int
+    nombreUsuario: String
+    contrasena: String
+    reservaId: Int
     puntuacion: Float
     comentario: String
 }
 
-# QUERY's
-type Query{
-    listarComentariosHotel(nombreHotel: String!, nombre: String!, contrasena: String!) : [ComentarioDTO]
-    listarComentariosUsuario(nombre: String!, contrasena: String!) : [ComentarioDTO]
-    mostrarComentarioUsuarioReserva(reservaId: Int!, nombre: String!, contrasena: String!) : [ComentarioDTO]
-    puntuacionMediaHotel(nombreHotel: String!, nombre: String!, contrasena: String!) : Float
-    puntuacionesMediasUsuario(nombre: String!, contrasena: String!) : Float
+type Query {
+    listarComentariosHotel(hotelId: Int!): [Comentarios]
+    listarComentariosUsuario(usuarioId: Int!): [Comentarios]
+    mostrarComentarioUsuarioReserva(reservaId: Int!): [Comentarios]
+    puntuacionMediaHotel(hotelId: Int!): Float
+    puntuacionMediaUsuario(usuarioId: Int!): Float
 }
 
-type Mutation{
-    crearComentario(
-        nombre: String!,
-        contrasena: String!,
-        nombreHotel: String!,
-        reserva_id: Int!,
-        puntuacion: Float!,
-        comentario: String!
-    ) : ComentarioDTO
-    eliminarComentarios: String
-    eliminarComentarioDeUsuario(comentarioId: String!) : String
+type Mutation {
+    crearComentario(input: ComentarioInput!): Comentarios
+    eliminarComentario(id: String!): String
+    eliminarTodos: String
 }

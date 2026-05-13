@@ -12,7 +12,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>Usuarios</artifactId>
+    <artifactId>usuarios</artifactId>
     <name>Microservicio Usuarios</name>
     <description>Microservicio REST para gestión de usuarios</description>
 
