@@ -39,11 +39,11 @@ public class HabitacionService {
                 hab.setHotel(hotel);
 
                 habitacionRepository.save(hab);
-                return "CREACION DE HABITACION FUE UN EXITO DESDE SERVICE";
+                return "HABITACIÓN CREADA CORRECTAMENTE";
             }
-            return "CREACION DE HABITACION FALLO PORQUE EL TIPO ES INVALIDO";
+            return "TIPO DE HABITACIÓN INVÁLIDO";
         }catch (Exception e){
-            return "CREAR HABITACION SUFRIO UN FALLO EN SERVICE";
+            return "ERROR AL CREAR LA HABITACIÓN";
         }
     }
 
@@ -65,22 +65,28 @@ public class HabitacionService {
                 hab.setHotel(hotel);
 
                 habitacionRepository.save(hab);
-                return "ACTUALIZAR HABITACION FUE UN EXITO DESDE SERVICE";
+                return "HABITACIÓN ACTUALIZADA CORRECTAMENTE";
             }
-            return "ACTUALIZAR HABITACION FALLO POR TIPO INVALIDO";
+            return "TIPO DE HABITACIÓN INVÁLIDO";
         }
-        return "ACTUALIZAR HABITACION FALLO DESDE SERVICE";
+        return "HABITACIÓN NO ENCONTRADA";
     }
 
     public String eliminarHabitacion(int id, UsuarioDTO usuarioDTO){
         if(!usuarioFeignClient.validarUsuario(usuarioDTO)){
             return "USUARIO NO AUTORIZADO";
         }
+
+        boolean tieneReservas = habitacionRepository.existsByHabitacionId(id);
+        if(tieneReservas){
+            return "NO SE PUEDE ELIMINAR: LA HABITACIÓN TIENE RESERVAS";
+        }
+
         if(habitacionRepository.existsById(id)){
             habitacionRepository.deleteById(id);
-            return "ELIMINAR HABITACION FUE UN EXITO EN SERVICE";
+            return "HABITACIÓN ELIMINADA CORRECTAMENTE";
         }
-        return "ELIMINAR HABITACION FALLO EN SERVICE";
+        return "HABITACIÓN NO ENCONTRADA";
     }
 
     public boolean tipoValido(String dato){

@@ -42,7 +42,7 @@ public class ReservaService {
             if (filtro.isPresent()) {
                 Habitacion habitacion = filtro.get();
                 if (!habitacion.isDisponible()) {
-                    return "LA HABITACION YA ESTA RESERVADA";
+                    return "LA HABITACION NO ESTA DISPONIBLE";
                 }
 
                 String idUsuario = usuarioFeignClient.obtenerIdPorNombre(usuarioDTO.getNombre());
@@ -53,17 +53,17 @@ public class ReservaService {
                 reserva.setHabitacion(habitacion);
                 reserva.setFechaInicio(reservaDTO.getFechaInicio());
                 reserva.setFechaFin(reservaDTO.getFechaFin());
-                reserva.setEstado("CONFIRMADA");
+                reserva.setEstado("CONFIRMADO");
 
                 habitacion.setDisponible(false);
                 habitacionRepository.save(habitacion);
 
                 reservaRepository.save(reserva);
-                return "RESEVA REALIZADA CON EXITO";
+                return "RESERVA CREADA CORRECTAMENTE";
             }
             return "HABITACION NO ENCONTRADA";
         } catch (Exception e) {
-            return "CREAR RESERVA FALLO DESDE SERVICE";
+            return "ERROR AL CREAR LA RESERVA";
         }
     }
 
@@ -83,9 +83,9 @@ public class ReservaService {
             }
 
             reservaRepository.save(reserva);
-            return "CAMBIAR ESTADO FUE UN EXITO";
+            return "ESTADO DE LA RESERVA ACTUALIZADO";
         }
-        return "CAMBIAR ESTADO SUFRIO UN FALLO DESDE SERVICE";
+        return "RESERVA NO ENCONTRADA";
     }
 
     public List<ReservaInfoDTO> listarReservasUsuario(UsuarioDTO usuarioDTO) {
@@ -131,7 +131,7 @@ public class ReservaService {
         Optional<Hotel> hotel = hotelRepository.findByNombre(nombre);
 
         if(!hotel.isPresent()){
-            throw new RuntimeException("HOTEL NO EXISTE: " + nombre);
+            throw new RuntimeException("HOTEL NO ENCONTRADO");
         }
         return String.valueOf(hotel.get().getHotelId());
     }
@@ -143,7 +143,7 @@ public class ReservaService {
         Optional<Hotel> hotel = hotelRepository.findById(id);
 
         if(!hotel.isPresent()){
-            throw new RuntimeException("HOTEL NO EXISTE ID: " + id);
+            throw new RuntimeException("HOTEL NO ENCONTRADO");
         }
         return hotel.get().getNombre();
     }

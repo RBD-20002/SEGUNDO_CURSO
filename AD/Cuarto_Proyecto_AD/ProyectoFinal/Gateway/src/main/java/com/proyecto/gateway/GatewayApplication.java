@@ -15,15 +15,15 @@ public class GatewayApplication {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                // 1. Ruta para Usuarios (Raíz /usuarios)
+                // 1. Ruta para Usuarios
                 .route("usuarios-service", r -> r.path("/usuarios/**")
-                        .uri("lb://usuarios")) // Asegúrate de que el micro de usuarios se llame "usuarios" en su properties
+                        .uri("lb://usuarios"))
 
-                // 2. Ruta para Reservas (Raíz /reservas)
+                // 2. Ruta para Reservas
                 .route("reservas-service", r -> r.path("/reservas/**")
                         .uri("lb://reservas"))
 
-                // 3. Ruta para Comentarios (Endpoint /comentarios para GraphQL/GraphIQL)
+                // 3. Ruta para Comentarios
                 .route("comentarios-service", r -> r.path("/comentarios/**")
                         .uri("lb://comentarios"))
                 .build();

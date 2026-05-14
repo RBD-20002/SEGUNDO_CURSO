@@ -41,9 +41,9 @@ public class HotelService {
             hotel.setDireccion(dto.getDireccion());
 
             hotelRepository.save(hotel);
-            return "CREAR HOTEL FUE UN EXITO EN SERVICE";
+            return "HOTEL CREADO CORRECTAMENTE";
         }catch (Exception e){
-            return "CREAR HOTEL SUFRIO UN FALLO EN SERVICE";
+            return "ERROR AL CREAR EL HOTEL";
         }
     }
 
@@ -58,9 +58,9 @@ public class HotelService {
             hotel.setDireccion(dto.getDireccion());
 
             hotelRepository.save(hotel);
-            return "ACTUALIZAR HOTEL FUE UN EXITO DESDE SERVICE";
+            return "HOTEL ACTUALIZADO CORRECTAMENTE";
         }
-        return "ACTUALIZAR HOTEL FALLO EN SERVICE";
+        return "HOTEL NO ENCONTRADO";
     }
 
     public String eliminarHotel(int id, UsuarioDTO usuarioDTO){
@@ -69,27 +69,18 @@ public class HotelService {
         }
 
         Optional<Hotel> hotel = hotelRepository.findById(id);
-
         if(hotel.isPresent()){
-
-            List<Habitacion> habitaciones =
-                    habitacionRepository.findByHotel_HotelId(id);
-
+            List<Habitacion> habitaciones = habitacionRepository.findByHotel_HotelId(id);
             for(Habitacion habitacion : habitaciones){
-
-                reservaRepository.deleteByHabitacion_HabitacionId(
-                        habitacion.getHabitacionId()
-                );
-
+                reservaRepository.deleteByHabitacion_HabitacionId(habitacion.getHabitacionId());
                 habitacionRepository.delete(habitacion);
             }
 
             hotelRepository.delete(hotel.get());
-
-            return "ELIMINAR HOTEL FUE UN EXITO EN SERVICE";
+            return "HOTEL ELIMINADO CORRECTAMENTE";
         }
 
-        return "ELIMINAR HOTEL FALLO EN SERVICE";
+        return "HOTEL NO SE PUDO ELIMINAR PORQUE NO SE ENCONTRO";
     }
 
     public String obtenerIdApartirNombre(String nombre, UsuarioDTO usuarioDTO){
@@ -101,7 +92,7 @@ public class HotelService {
             Hotel hotel = filtrado.get();
             return String.valueOf(hotel.getHotelId());
         }
-        return "OBTENER ID A TRAVEZ DEL NOMBRE FALLO DESDE SERVICE";
+        return "HOTEL NO ENCONTRADO PARA MOSTRAR LA ID";
     }
 
     public String obtenerNombreAPartirId(int id, UsuarioDTO usuarioDTO){
@@ -113,6 +104,6 @@ public class HotelService {
             Hotel hotel = filtrado.get();
             return hotel.getNombre();
         }
-        return "OBTENER NOMBRE A TRAVEZ DE ID FALLO DESDE SERVICE";
+        return "HOTEL NO ENCONTRADO PARA MOSTRAR EL NOMBRE";
     }
 }

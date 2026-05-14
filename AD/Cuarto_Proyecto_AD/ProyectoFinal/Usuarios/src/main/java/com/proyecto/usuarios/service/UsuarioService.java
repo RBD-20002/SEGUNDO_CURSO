@@ -24,9 +24,9 @@ public class UsuarioService {
             usuario.setContrasena(dto.getContrasena());
 
             usuarioRepository.save(usuario);
-            return "CREAR USUARIO FUE UN EXITO DESDE SERVICE";
+            return "USUARIO CREADO CORRECTAMENTE";
         }catch (Exception e){
-            return "CREAR USUARIO SUFRIO UN FALLO DESDE SERVICE";
+            return "ERROR AL CREAR EL USUARIO";
         }
     }
 
@@ -40,18 +40,18 @@ public class UsuarioService {
             usuario.setContrasena(dto.getContrasena());
 
             usuarioRepository.save(usuario);
-            return "ACTUALIZAR USUARIO FUE UN EXITO DESDE SERVICE";
+            return "USUARIO ACTUALIZADO CORRECTAMENTE";
         }
-        return "ACTUALIZAR USUARIO SUFRIO UN FALLO DESDE SERVICE";
+        return "USUARIO NO ENCONTRADO";
     }
 
     public String eliminarUsuario(String nombre, String contrasena){
         Optional<Usuario> usuarioEliminar = usuarioRepository.findByNombreAndContrasena(nombre,contrasena);
         if(usuarioEliminar.isPresent()){
             usuarioRepository.delete(usuarioEliminar.get());
-            return "ELIMINAR USUARIO FUE UN EXITO DESDE SERVICE";
+            return "USUARIO ELIMINADO CORRECTAMENTE";
         }
-        return "ELIMINAR USUARIO SUFRIO UN FALLO DESDE SERVICE";
+        return "USUARIO O CONTRASEÑA INCORRECTOS";
     }
 
     public boolean validarUsuario(String nombre, String contrasena){
@@ -63,7 +63,7 @@ public class UsuarioService {
         if(user.isPresent()){
             return user.get().getNombre();
         }
-        return "OBTENER INFORMACION POR ID SUFRIO UN FALLO DESDE SERVICE";
+        return "USUARIO NO ENCONTRADO";
     }
 
     public String obtenerInfoUsuarioPorNombre(String nombre){
@@ -71,7 +71,7 @@ public class UsuarioService {
         if(user.isPresent()){
             return  String.valueOf(user.get().getUsuarioId());
         }
-        return "OBTENER INFORMACION POR NOMBRE SUFRIO UN FALLO DESDE SERVICE";
+        return "USUARIO NO ENCONTRADO";
     }
 
     public boolean checkIfExist(Integer id){

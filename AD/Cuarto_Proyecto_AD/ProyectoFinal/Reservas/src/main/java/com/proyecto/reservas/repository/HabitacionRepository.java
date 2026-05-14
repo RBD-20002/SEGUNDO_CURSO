@@ -10,4 +10,6 @@ import java.util.List;
 public interface HabitacionRepository extends JpaRepository<Habitacion, Integer> {
 
     List<Habitacion> findByHotel_HotelId(Integer hotelId);
+
+    boolean existsByHabitacionId(Integer id);
 }
