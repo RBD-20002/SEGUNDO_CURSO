@@ -8,8 +8,5 @@ import java.util.List;
 
 @Repository
 public interface HabitacionRepository extends JpaRepository<Habitacion, Integer> {
-
     List<Habitacion> findByHotel_HotelId(Integer hotelId);
-
-    boolean existsByHabitacionId(Integer id);
 }

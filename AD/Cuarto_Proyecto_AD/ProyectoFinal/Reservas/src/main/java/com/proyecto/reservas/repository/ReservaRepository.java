@@ -17,4 +17,6 @@ public interface ReservaRepository extends JpaRepository<Reserva,Integer> {
     boolean checkReserva(int idUsuario, int idHotel, int idReserva);
 
     void deleteByHabitacion_HabitacionId(Integer habitacionId);
+
+    boolean existsByHabitacion_HabitacionId(Integer habitacionId);
 }

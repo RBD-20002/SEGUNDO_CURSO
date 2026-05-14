@@ -7,6 +7,7 @@ import com.proyecto.reservas.entity.Habitacion;
 import com.proyecto.reservas.entity.Hotel;
 import com.proyecto.reservas.enums.TipoHabitacion;
 import com.proyecto.reservas.feignClient.UsuarioFeignClient;
+import com.proyecto.reservas.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.proyecto.reservas.repository.HabitacionRepository;
@@ -18,6 +19,9 @@ public class HabitacionService {
 
     @Autowired
     private HabitacionRepository habitacionRepository;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
 
     @Autowired
     private UsuarioFeignClient usuarioFeignClient;
@@ -77,7 +81,7 @@ public class HabitacionService {
             return "USUARIO NO AUTORIZADO";
         }
 
-        boolean tieneReservas = habitacionRepository.existsByHabitacionId(id);
+        boolean tieneReservas = reservaRepository.existsByHabitacion_HabitacionId(id);
         if(tieneReservas){
             return "NO SE PUEDE ELIMINAR: LA HABITACIÓN TIENE RESERVAS";
         }
