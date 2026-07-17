@@ -17,8 +17,7 @@ public class RepoEvento {
 
     public void listarEvento(){
         try {
-            List<Evento> eventos = (List<Evento>) session.createQuery("FROM Evento")
-                    .getResultList();
+            List<Evento> eventos = (List<Evento>) session.createQuery("FROM Evento").getResultList();
             if(eventos != null){
                 for(Evento evento : eventos){
                     System.out.println(evento);

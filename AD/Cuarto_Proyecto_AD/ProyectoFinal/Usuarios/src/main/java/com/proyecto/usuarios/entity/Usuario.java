@@ -19,10 +19,10 @@ public class Usuario {
     @Column(name = "usuario_id", nullable = false)
     private int usuarioId;
 
-    @Column(name = "nombre", columnDefinition = "VARCHAR(100) DEFAULT NULL", length = 100)
+    @Column(name = "nombre", length = 100)
     private String nombre;
 
-    @Column(name = "correo_electronico", columnDefinition = "VARCHAR(255) DEFAULT NULL")
+    @Column(name = "correo_electronico")
     private String correoElectronico;
 
     @Column(name = "direccion", columnDefinition = "VARCHAR(255) DEFAULT NULL")
@@ -30,4 +30,6 @@ public class Usuario {
 
     @Column(name = "contrasena", columnDefinition = "VARCHAR(255) DEFAULT NULL")
     private String contrasena;
+
+
 }
